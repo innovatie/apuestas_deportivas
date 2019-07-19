@@ -1,0 +1,308 @@
+.socials-footer {
+	background: $color-back;
+	padding: 49px 20px;
+
+	* {
+		color: $color-white;
+	}
+
+	ul {
+		margin: 0;
+		margin-bottom: 15px;
+		padding-left: 0;
+		text-align: center;
+
+		li {
+			list-style-type: none;
+			display: inline-block;
+			outline: none;
+
+			a {
+				outline: none;
+				margin: 0 3px;
+
+				i {
+					font-size: 30px;
+				}
+			}
+		}
+	}
+
+	.copyright {
+		text-align: center;
+		font-size: 10px;
+		line-height: normal;
+		opacity: .8;
+
+		p {
+			margin-bottom: 0;
+		}
+	}
+
+	@media #{$mobile-m} {
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+}
+
+.pre-footer {
+	background: $color-footer;
+	padding: 55px 30px;
+	clear: both;
+
+	h3 {
+		max-width: 214px;
+		text-align: left;
+	}
+
+	.container-pre-footer {
+		display: flex;
+		justify-content: center;
+
+		h3 {
+			margin-top: -14px;
+			margin-right: 74px;
+			margin-bottom: 0;
+
+			@media #{$mobile} {
+				margin-right: 0;
+			}
+		}
+
+		.container-form {
+			display: inline-block;
+
+			p {
+				margin-bottom: 0;
+
+				label {
+					position: relative;
+
+					span[role="alert"],
+					span.ajax-loader {
+						position: absolute;
+					}
+				}
+			}
+
+			input[type="text"],
+			input[type="email"] {
+				padding: 14px 20px;
+				border: solid 1px $color-gray-light;
+				border-radius: 0;
+				outline: none;
+				-webkit-appearance: none;
+			}
+
+			input[type="submit"] {
+				padding: 14px 35px;
+				border: none;
+				border-radius: 0;
+				cursor: pointer;
+				outline: none;
+				background: $color-blue;
+				color: $color-white;
+				transition: all 0.2s;
+				-webkit-appearance: none;
+
+				&:hover {
+					background: darken($color-blue, 8%);
+				}
+			}
+		}
+	}
+
+	.wpcf7-form {
+		>p {
+			display: flex;
+
+			span,
+			label {
+				display: block;
+			}
+
+			label {
+				margin-left: 10px;
+				margin-right: 10px;
+			}
+
+			label:first-child,
+			label:nth-child(2) {
+				width: 250px;
+			}
+
+			label:nth-child(3) {
+				input {
+					width: 130px;
+				}
+			}
+
+			input {
+				box-sizing: border-box;
+				max-width: 100%;
+			}
+		}
+
+		.wpcf7-response-output {
+			margin-left: 10px;
+			margin-right: 10px;
+		}
+	}
+
+	@media #{$tablet} {
+		padding: 40px 15px;
+
+		.container-pre-footer {
+			display: block;
+
+			h3 {
+				text-align: center;
+				margin: 0 auto 20px;
+				margin-top: 0 !important;
+			}
+		}
+
+		.container-pre-footer .container-form {
+			display: block;
+			width: 350px;
+			max-width: 100%;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.wpcf7-form {
+			display: block;
+
+			>p {
+				display: block;
+
+				label {
+					margin: 0 0 10px;
+					width: 100% !important;
+
+					&:last-child {
+						margin-bottom: 0;
+					}
+				}
+
+				label:nth-child(3) input {
+					width: 100%;
+				}
+			}
+
+			.wpcf7-response-output {
+				margin-left: 0;
+				margin-right: 0;
+			}
+
+			span[role="alert"] {
+				display: none;
+			}
+		}
+	}
+}
+
+footer {
+	&.site-footer {
+		padding: 10px 15px;
+
+		>.wrap {
+			position: relative;
+		}
+
+		.vc_col-sm-2 {
+			padding-top: 6px;
+		}
+
+		.menu-footer {
+			padding-left: 0;
+
+			@media #{$tablet-medium} {
+				display: none;
+			}
+
+			li {
+				ul {
+					padding-top: 15px;
+					padding-left: 0;
+				}
+
+				display: inline-block;
+				list-style-type: none;
+
+				a {
+					color: $color-brown;
+				}
+
+				.menu {
+					li {
+						padding: 0 20px;
+
+						@media #{$tablet-big} {
+							padding: 0 10px;
+						}
+
+						&.download-btn {
+							margin-left: 85px;
+
+							@media #{$desktop-large} {
+								margin-left: 0px;
+							}
+
+							a {
+								background: $color-green;
+								color: $color-white;
+								padding: 14px 29px;
+
+								&:hover {
+									background: $color-green-dark;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		@media #{$non-desktop} {
+			.vc_col-sm-2 {
+				text-align: center;
+
+				img {
+					display: inline-block;
+					max-width: 120px;
+				}
+			}
+		}
+	}
+}
+
+.back-to-top {
+	color: $color-green;
+	display: none;
+	font-size: 0.875em;
+	font-weight: 500;
+	line-height: normal;
+	right: 0;
+	position: absolute;
+	top: 6px;
+	white-space: nowrap;
+
+	&:after {
+		display: inline-block;
+		content: "\f106";
+		font-family: FontAwesome;
+		font-size: 22px;
+		height: 40px;
+		line-height: 40px;
+		margin-left: 5px;
+		position: relative;
+		top: 2px;
+		text-align: center;
+		width: 40px;
+	}
+
+	@media screen and (min-width: 768px) and (max-width: 1536px) {
+		display: inline-block;
+	}
+}

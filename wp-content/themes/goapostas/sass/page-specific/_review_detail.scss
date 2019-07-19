@@ -1,0 +1,457 @@
+
+.single-review {
+
+    color: $color-back;
+
+    .review-analysis {
+        margin-top: -100px;
+        position: relative;
+        z-index: 4;
+    }
+
+    .entry-content section:not([data-vc-full-width]) {
+        margin-left: auto;
+        margin-right: auto;
+        width: 982px;
+        max-width: 100%;
+    }
+    .entry-content {
+        >section:first-child {
+            >.vc_row {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+        .vc_row:not([class*="vc_column-gap-"]) {
+            margin-left: 0;
+            margin-right: 0;
+        }
+        .vc_row-fluid {
+            width: 100%;
+        }
+        section p {
+            max-width: 777px;
+        }
+        ul > li {
+            max-width: 100%;
+            width: 400px;
+            line-height: 2.63em;
+        }
+    }
+
+    .vc_section-has-fill {
+        background-size: cover;
+        background-position: center;
+    }
+
+    .wpb_text_column{
+        h3 {
+            font-size: 26px;
+            margin-top: 38px;
+        }
+    }
+
+    .cta-image-block,
+    .bonus-box {
+        margin-right: -100px;
+    }
+
+    .cta-two-image-wrap {
+        .cta-image-block {
+            margin-right: 0 !important;
+        }
+        .cta-image-block picture,
+        .aside-image  {
+            height: 350px;
+        }
+    }
+
+    .vc_row.vc_column-gap-20 {
+        @include grid-gap-20;
+    }
+    .vc_row.vc_column-gap-25 {
+        @include grid-gap-25;
+    }
+
+    .wpb_text_column p {
+        color: $color-back;
+        line-height: 2.13;
+        margin-bottom: 34px;
+    }
+
+    .page-heading {
+        p {
+            color: $color-back;
+            width: 873px;
+        }
+    }
+}
+
+// floating common section
+
+.floating-common {
+    margin-top: -100px;
+
+    >.vc_row {
+        background-color: #fff;
+        border: 1px solid $color-gray-light;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+// General Evaluation section
+.sec-gral-evaluation {
+    color: $color-back;
+    line-height: 2.63em;
+
+    h2 {
+        margin-bottom: 40px;
+    }
+
+    h3 {
+        font-size: 26px;
+        margin-top: 38px;
+        margin-bottom: 20px;
+    }
+}
+
+.ctag {
+    height: 17px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 17px;
+    color: $color-white;
+    padding: 7px 8px 6px;
+    text-decoration: none;
+
+    &:not(:last-child) {
+        margin-right: 10px;
+    }
+    &.tag-red {
+        background-color: $color-red;
+    }
+    &.tag-blue {
+        background-color: $color-blue;
+    }
+}
+
+// Quick Navigation section
+
+.quick-nav {
+    margin: 0 auto;
+    max-width: 100%;
+    padding-top: 34px;
+    padding-bottom: 34px;
+    width: 1128px;
+
+    ul {
+        display: flex;
+        justify-content: space-between;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+
+        >li {
+            width: auto !important;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        li, a {
+            color: $color-back;
+            display: inline-block;
+            font-weight: 500;
+            line-height: 1em;
+        }
+    }
+}
+
+
+// 365 content text
+
+.section-md {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 30px;
+    padding-right: 30px;
+    width: 980px;
+}
+
+
+// gadgets & payments
+
+.gadget-icon {
+    width: 65px;
+    height: 56px;
+    border: 1px solid $color-gray-light;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    position: relative;
+
+    &:last-child {
+        margin-right: 0;
+    }
+
+    img {
+        height: auto;
+        max-height: 30px;
+        max-width: 78%;
+        object-fit: cover;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: auto;
+    }
+    .marked {
+        border-radius: 50%;
+        bottom: -5px;
+        left: 50%;
+        display: block;
+        width: 10px;
+        height: 10px;
+        background-color: $color-green;
+        position: absolute;
+        transform: translateX(-50%);
+    }
+}
+
+// Responsive Tablet
+
+.single-review {
+    @media screen and (min-width: 1221px) {
+        .hero {
+            padding-top: 250px;
+            padding-bottom: 150px;
+        }
+        .scrv-about .ads-block:first-child {
+            margin-top: -40px;
+        }
+    }
+
+    @media screen and (max-width: 1200px) {
+        .bonus-box,
+        .cta-image-block {
+            margin-right: -50px;
+        }
+        .ads-block.pos-float-r {
+            margin-right: 0;
+        }
+    }
+
+    @media screen and (max-width: 1023px) {
+        .entry-content .scrv-general {
+            padding-top: 80px !important;
+            padding-bottom: 80px !important;
+
+            >.vc_row>.wpb_column>.vc_column-inner .wpb_column {
+                margin-bottom: 40px;
+            }
+        }
+        .bonus-box,
+        .cta-image-block {
+            margin-right: 0;
+        }
+        .entry-content .scrv-quick-nav {
+            display: none;
+        }
+        .entry-content .scrv-intro {
+            padding-top: 0 !important;
+            padding-bottom: 60px !important;
+
+            >.vc_row:first-child  {
+                .wpb_text_column:first-child {
+                    padding-bottom: 25px !important;
+                }
+                .wpb_text_column:nth-child(2) {
+                    p {
+                        line-height: 1.92;
+                    }
+                }
+            }
+        }
+        .entry-content .gadgets-payments {
+            >.vc_row .wpb_column:first-child {
+                padding-bottom: 60px;
+            }
+        }
+        .entry-content .scrv-about {
+            padding-bottom: 80px !important;
+            .ads-block[class*="size-l"]:first-child {
+                margin-top: -80px;
+            }
+            >.vc_row:nth-child(3)>.wpb_column .wpb_text_column {
+                padding-bottom: 0 !important;
+            }
+            >.vc_row:nth-child(5) {
+                .ads-block {
+                }
+            }
+        }
+        .rv-how-deposit-mobile {
+            h2 {
+                width: 586px;
+                max-width: 100%;
+            }
+        }
+        .rv-abou365t--btm {
+            .ads-block.pos-float-r {
+                margin-left: 0;
+                margin-bottom: 34px;
+            }
+        }
+        .entry-content .list-markets { 
+            padding-bottom: 60px !important;
+            .wpb_text_column h3 {
+                margin-top: 0;
+            }
+            >.vc_row {
+                padding-top: 0 !important;
+                padding-bottom: 20px !important;
+
+                &:last-child {
+                    padding-bottom: 0 !important;
+                }
+            }
+        }
+        .entry-content .scrv-live {  //12
+            padding-bottom: 60px !important;
+
+            .vc_row:first-child {
+                padding-bottom: 60px !important;
+            }
+        }
+        .entry-content .scrv-corporative {  //15
+            padding-bottom: 80px !important;
+        }
+        .bonus-box .header-box {
+            margin-bottom: 0;
+        }
+        .cta-two-image-wrap .cta-image-block {
+            width: 38.841807%;
+            picture {
+                height: 253px;
+            }
+        }
+        .cta-two-image-wrap .aside-image {
+            height: 253px;
+            width: calc(61.158192% - 14px);
+        }
+    }
+    
+    //mobile
+    @media #{$non-desktop} {
+        .wpb_text_column h3  {
+            margin-top: 0;
+        }
+        .entry-content .scrv-general {
+            padding-top: 60px !important;
+            padding-bottom: 60px !important;
+            
+            >.vc_row>.wpb_column>.vc_column-inner .wpb_column {
+                margin-bottom: 30px;
+            }
+        }
+        .cta-image-block picture {
+            height: 280px;
+        }
+        .bonus-box {
+            padding: 20px;
+        }
+        .entry-content .scrv-intro {
+            >.vc_row:first-child {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                .wpb_text_column:first-child {
+                    padding-bottom: 0 !important;
+                }
+                .wpb_text_column:nth-child(2) p>span[style*="font-size"] {
+                    color: $color-gray-dark;
+                    line-height: 2.09;
+                }
+            }
+        }
+        .entry-content .gadgets-payments { 
+            padding-bottom: 60px !important;
+            .wpb_content_element.wpb_content_element {
+                margin-bottom: 0;
+            }
+            >.vc_row .wpb_column:first-child {
+                padding-bottom: 40px;
+            }
+        }
+        .entry-content .scrv-about {  
+            padding-top: 60px !important;
+            padding-bottom: 60px !important;
+            .wpb_content_element.wpb_content_element {
+                margin-bottom: 0;
+            }
+            >.rv-row-about  {
+                padding-bottom: 60px !important;
+
+                .wpb_text_column:last-child {
+                    padding-bottom: 0 !important;
+                }
+            }
+            .ads-block.pos-float-r {
+                margin-left: 0;
+            }
+            .ads-block[class*=size-l]:first-child{
+                margin-top: 0;
+            }
+            >.rv-row-bonus {
+                padding-bottom: 40px !important;
+                >.wpb_column>.vc_column-inner .wpb_text_column:first-child {
+                    padding-bottom: 30px !important;
+                }
+            }
+            >.rv-how-deposit-mobile {
+                .vc_column-inner {
+                    padding-bottom: 60px !important;
+                }
+            }
+            >.rv-abou365t--btm {
+                padding-bottom: 26px !important;
+
+                >.wpb_column:first-child .vc_column-inner {
+                    padding-bottom: 0 !important;
+                }
+                .ads-block {
+                    margin-top: 25px;
+                }
+            }
+        }
+        .entry-content .scrv-live {
+            >.vc_row:first-child {
+                padding-bottom: 30px !important;
+            }
+        }
+        .cta-two-image-wrap .cta-image-block,
+        .cta-two-image-wrap .aside-image {
+            width: 100%;
+        }
+        .entry-content .scrv-support { 
+            padding-bottom: 60px !important;
+        }
+        .entry-content .site-languages { //14
+            padding-bottom: 60px !important;
+            .wpb_content_element.wpb_content_element {
+                margin-bottom: 0;
+            }
+        }
+        .entry-content .scrv-corporative {
+            padding-bottom: 50px !important;
+            .wpb_content_element.wpb_content_element {
+                margin-bottom: 0;
+            }
+            >.vc_row >.wpb_column> .vc_column-inner>.wpb_wrapper>.wpb_text_column {
+                padding-bottom: 20px !important;
+            }
+        }
+        
+    }
+}

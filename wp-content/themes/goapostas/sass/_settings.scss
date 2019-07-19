@@ -1,0 +1,44 @@
+// Layout
+$content-width: 100%;
+$container-size: 1170px;
+$desktop-large: 'only screen and (max-width: 1220px)';
+$tablet-big: 'only screen and (max-width: 1150px)';
+$desktop: 'only screen and (min-width: 1024px)';
+$tablet: 'only screen and (max-width: 1023px)';
+$tablet-medium: 'only screen and (max-width: 960px)';
+$tablet-s: 'only screen and (max-width: 880px)';
+$mobile: 'only screen and (max-width: 768px)';
+$mobile-l: 'only screen and (max-width: 740px)';
+$mobile-m: 'only screen and (max-width: 620px)';
+$mobile-s: 'only screen and (max-width: 550px)';
+$mobile-xs: 'only screen and (max-width: 450px)';
+$non-desktop: 'only screen and (max-width: 767px)';
+
+//Focus homepage
+$focus-category-desktop: 'only screen and (min-width: 990px)';
+$focus-category-tablet: 'only screen and (min-width: 769px)';
+
+// Fonts
+$primary_font: 'Poppins';
+
+// Colors
+$color-white: #ffffff;
+$color-black: #000000;
+$color-green: #0DA375;
+$color-yellow: #FDCF07;
+$color-green-dark: #0C9070;
+$color-brown: #333333;
+$color-orange: #FFC857;
+$color-gray-light: #ececec;
+$color-gray-dark: #505E65;
+$color-gray: #DFE4EA;
+$color-gray-light: #F1F2F6;
+$color-red: #BA2138;
+$color-dark: #092327;
+$color-blue: #1959A1;
+$color-blue-dark: #0C4381;
+$color-dark-black: #092327;
+$color-lilac: #2D3047;
+$color-back: #1d1d1b;
+$color-footer: #f9f9fb;
+$color-red-orange: #fe4020;

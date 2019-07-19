@@ -1,0 +1,896 @@
+//------------------------------------------------------
+// Sticky header
+//------------------------------------------------------
+.site-header {
+    position: relative;
+    z-index: 999;
+}
+
+.header-navigation .primary-logo {
+    display: block;
+    float: left;
+    padding:0;
+    position: relative;
+    top: 50%;
+    transform: translate(0, -50%);
+    max-width: 200px;
+}
+@media screen and (min-width: 1023px)  {
+    .top-logo{
+        .header-navigation{
+            .primary-logo{
+                width: 100%;
+                clear: both;
+                max-width: 100%;
+                text-align: center;
+                img.light{
+                    display: inline-block;
+                }
+            }
+            .main-navigation{
+                max-width: 942px;
+                margin: 0 auto;
+                float: none;
+            }
+        }
+        .scrolled{
+            .header-navigation{
+                .primary-logo{
+                    width: 100%;
+                    clear: both;
+                    max-width: 100%;
+                    text-align: center;
+                    img.light{
+                        display: none;
+                    }
+                    img.dark{
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+        #header-outer.scrolled{
+            height: 170px;
+        }
+    }
+    .center-logo,
+    .center-logo-black{
+        .header-navigation{
+            .navigation-container{
+                .main-navigation{
+                    display: inline-block;
+                    float: none;
+                    width: 400px;
+                }
+                .primary-logo{
+                    display: inline-block;
+                    float: none;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1200px)  {
+    .primary-logo img {
+        margin-left: -10px;
+    }
+}
+
+@media #{$desktop} {
+    .primary-logo img.light {
+        display: block;
+    }
+    .primary-logo img.dark {
+        display: none;
+    }
+    .scrolled .primary-logo img.dark {
+        display: block;
+    }
+    .scrolled .primary-logo img.light {
+        display: none;
+    }
+
+    .primary-logo img.light-mobile,
+    .primary-logo img.dark-mobile {
+        display: none;
+    }
+    .scrolled .primary-logo img.dark-mobile,
+    .scrolled .primary-logo img.light-mobile {
+        display: none;
+    }
+}
+
+@media #{$tablet} {
+    .primary-logo {
+        img.light,
+        img.dark {
+            display: none;
+        }
+    }
+    .scrolled .primary-logo img.dark,
+    .scrolled .primary-logo img.light {
+        display: none;
+    }
+
+    .primary-logo img.light-mobile {
+        display: block;
+        width: 160px;
+        margin-left: 18px;
+    }
+    .primary-logo img.dark-mobile {
+        display: none;
+    }
+    .scrolled .primary-logo img.dark-mobile {
+        display: block;
+        width: 160px;
+        margin-left: 18px;
+    }
+    .scrolled .primary-logo img.light-mobile {
+        display: none;
+    }
+}
+
+#goapostas-top-sticky-holder {
+    position: relative;
+    z-index: 1;
+
+    @media #{$tablet} {
+        height: 50px;
+        position: absolute;
+        .primary-logo img{
+            // height: 40px;
+            // width: auto;
+        }
+    }
+}
+
+#header-outer {
+    position: absolute;
+    top: 0px;
+    height: 90px;
+    left: 0px;
+    width: 100%;
+
+    &.scrolled {
+        background: #FFFFFF;
+        box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+
+    & > .container {
+        @include row;
+        max-width: 1024px;
+    }
+
+    &.fixed {
+        position: fixed;
+        z-index: 10;
+    }
+
+    @media #{$tablet} {
+        position: fixed;
+        height: 50px;
+        // box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+}
+
+// When Admin bar is present / keep bar consistent across sizes
+body.admin-bar #header-outer {
+
+    @media #{$desktop} {
+        &.fixed {
+            top: 32px;
+        }
+    }
+
+    @media #{$tablet} {
+        top: 32px;
+    }
+
+    @media #{$non-desktop} {
+        top: 46px;
+    }
+}
+
+#wpadminbar {
+    @media only screen and (max-width: 600px) {
+        position: fixed;
+    }
+}
+
+@media #{$tablet} {
+    body.admin-bar .main-navigation {
+        top: 96px;
+    }
+}
+
+//------------------------------------------------------
+// Mobile menu open/close toggle
+//------------------------------------------------------
+
+#goapostas-menu-toggle {
+    border: none;
+    position: absolute;
+    display: none;
+    top: 5px;
+    right: 5px;
+    height: 40px;
+    width: 130px;
+    background: transparent;
+    color: #FFFFFF;
+    outline: none!important;
+     .close,
+     .menu {
+        font-size: 16px;
+        margin-right: 10px;
+        float: none; // Keep this
+        color: #FFFFFF; // Keep this
+        opacity: 1; // Keep this
+        text-shadow: none; // Keep this
+        font-weight: inherit; // Keep this
+     }
+
+    .close,
+    .menu,
+    .icon-burger-menu,
+    .icon-close {
+        line-height: 40px;
+        height: 40px;
+        vertical-align: middle;
+    }
+
+    .icon-burger-menu,
+    .icon-close {
+        font-size: 36px;
+    }
+
+    .close,
+    .icon-close {
+        display: none;
+    }
+
+    @media #{$tablet} {
+        display: block;
+        right: 0;
+    }
+
+    &.opened {
+        .close,
+        .icon-close {
+            display: inline-block;
+        }
+        .menu,
+        .icon-burger-menu {
+            display: none;
+        }
+        .menu-toggle-border {
+            opacity: 1;
+        }
+    }
+}
+.scrolled #goapostas-menu-toggle {
+    .menu,
+    .close,
+    .icon-burger-menu,
+    .icon-close {
+        color: #333333;
+    }
+}
+
+//------------------------------------------------------
+// Mobile menu - body cover
+//------------------------------------------------------
+
+#goapostas-nav-cover {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 99;
+    display: none;
+
+    @media #{$tablet} {
+
+        &.open {
+            display: block;
+        }
+
+        &.open-anim {
+            opacity: 1;
+        }
+    }
+}
+
+//------------------------------------------------------
+// Main navigation
+//------------------------------------------------------
+@media #{$desktop} {
+    .scrolled .header-navigation .main-navigation > ul > li > a {
+        color: #333333;
+        &:after {
+            color: #333333;
+        }
+    }
+}
+.header-navigation {
+    font-weight: 700;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    height: 90px;
+    position: relative;
+
+    @media #{$tablet} {
+        float: left;
+        height: 50px;
+        top: 0;
+    }
+
+    .navigation-container {
+        max-width: 1138px;
+        height: 90px;
+        margin: 0 auto;
+        @include clearfix;
+
+        @media #{$tablet} {
+            height: 50px;
+        }
+    }
+
+    & * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .main-navigation {
+        float: right;
+
+        & > ul { // '#primary-menu'
+
+            @media #{$tablet} {
+                transition: transform 0.3s ease-in-out;
+                position: absolute;
+                top: 23px;
+                left: 0px;
+                right: 0;
+                width: 80%;
+                text-align: left;
+                display: block;
+                // margin: 0 auto 0 0;
+                padding: 0 10%;
+
+                li {
+                    height: 50px;
+                    line-height: 50px;
+                    border-bottom: 1px solid #f1f1f1;
+                }
+
+                &.toplevel-left {
+                    transform: translateX(-100%);
+                }
+
+                &.toplevel-hide {
+                    & > li > a {
+                        display: none;
+                    }
+                }
+            }
+
+            @media #{$mobile-s} {
+                width: 80%;
+                margin: 0 auto;
+                padding: 0;
+                width: auto;
+                left: 18px;
+                right: 18px;
+            }
+
+            @media #{$desktop} {
+                transition: transform 0.15s ease-in-out;
+                @include clearfix;
+                float: right;
+                > li {
+                    float: left;
+
+                    &.submenu-show:after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        width: 100%;
+                        height: 1px;
+                        max-width: 1138px;
+                        margin: 0 auto;
+                        background: #505e65;
+                        opacity: 0.15;
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        width: 100%;
+                        height: 1px;
+                        margin: 0 auto;
+                        background: #505e65;
+                    }
+
+                    > a {
+                        height: 90px;
+                        line-height: 90px;
+                        padding: 0 1.2em;
+                        color: #FFFFFF;
+                    }
+                }
+
+                & > li > a:focus {
+                    outline: none;
+                }
+            }
+            @media screen and (min-width: 1200px) {
+                >li {
+                    >a {
+                        padding: 0 1.5em;
+                    }
+                }
+            }
+        }
+
+        @media #{$tablet} {
+            position: fixed;
+            background-color: #FFFFFF;
+            top: 50px;
+            bottom: 0px;
+            right: 0px;
+            width: 80%;
+            max-width: 400px;
+            height: 100%;
+            z-index: 100;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            overflow: scroll;
+            display: none;
+            border-left: 2px solid $color-green;
+
+            &.open {
+                display: block;
+            }
+
+            &.open-anim {
+                transform: translateX(0%);
+            }
+
+            &.hide-overflow {
+                overflow: hidden;
+            }
+        }
+        @media #{$mobile_s} {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+
+    // show menu item on mobile only
+    .menu-item.goapostas-menu-mobile {
+        @media #{$desktop} {
+            display: none;
+        }
+    }
+
+    li {
+        @media #{$tablet} {
+            width: 100%;
+        }
+    }
+
+    //------------------------------------------------------
+    // Links and buttons
+    //------------------------------------------------------
+
+    a, .menu-return {
+        display: block;
+        // position: relative;
+        padding: 5px;
+        text-decoration: none;
+        font-family: $primary-font;
+        font-weight: normal;
+        font-size: 16px;
+
+        @media #{$tablet} {
+            color: #333333;
+            // padding: 15px 40px 15px 20px;
+            // border-bottom: 1px #9b9b9b solid;
+            color: #333333;
+            padding: 0;
+
+            &:hover, &:focus {
+                color: #333333;
+                outline: none;
+            }
+        }
+    }
+
+    .menu-return {
+        display: none;
+
+        @media #{$tablet} {
+            display: block;
+            background-color: transparent;
+            border: none;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #f1f1f1;
+            padding-left: 22px;
+            height: 50px;
+            font-weight: 600;
+            position: relative;
+
+            &:before {
+                position: relative;
+                top: 4px;
+            }
+
+            &:hover, &:focus {
+                text-decoration: none;
+            }
+            &:after {
+                font-family: icomoon !important;
+                content: "\e901";
+                position: absolute;
+                display: inline-block;
+                top: 21px;
+                left: 0;
+                -webkit-transform: rotate(90deg);
+                transform: rotate(90deg);
+                font-size: 7px;
+            }
+        }
+    }
+
+    //------------------------------------------------------
+    // Links with submenus
+    //------------------------------------------------------
+
+
+
+    .menu-item-has-children.submenu-show > a {
+        @media #{$desktop} {
+            &:before {
+                content: "";
+                height: 2px;
+                background: #0da375;
+                display: block;
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                left: 0;
+                right: 0;
+            }
+        }
+    }
+    .menu-item-has-children > a {
+        position: relative;
+
+        @media #{$desktop} {
+
+        }
+
+        &:after {
+            display: inline-block;
+            color: #484848;
+            margin-left: .1em;
+            -webkit-transition: -webkit-transform .3s ease-in-out;
+            transition: -webkit-transform .3s ease-in-out;
+            transition: transform .3s ease-in-out;
+            transition: transform .3s ease-in-out,-webkit-transform .3s ease-in-out;
+            font-family: icomoon!important;
+            speak: none;
+            font-style: normal;
+            font-weight: 400;
+            font-variant: normal;
+            text-transform: none;
+            text-decoration: none;
+            font-size: 6px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            content: "\e901"; // TODO add real icon
+            line-height: 1;
+            position: absolute;
+            top: 42px;
+            right: 6px;
+            color: #FFFFFF;
+
+            @media #{$tablet} {
+                position: absolute;
+                top: 25px;
+                right: -3px;
+                margin: 0;
+                color: #333333;
+                height: 1em;
+                overflow: hidden;
+                -webkit-transform: rotate(-90deg);
+                transform: rotate(-90deg);
+            }
+        }
+
+        &:hover, &:active, &:focus {
+            &:after {
+                @media #{$tablet} {
+                    color: $color-green;
+                }
+            }
+        }
+    }
+
+    //------------------------------------------------------
+    // Submenus
+    //------------------------------------------------------
+
+    .main-navigation .sub-menu {
+        display: none;
+        position: relative;
+        z-index: 103;
+        background: #FFFFFF;
+        width: 100%;
+        padding: 50px 0;
+        transition: opacity 0.15s ease-in-out;
+        text-align: left;
+
+        @media #{$tablet} {
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 0 0 0 18px;
+            margin: 0;
+            transform: translateX(100%);
+            // background-color: transparent;
+            background-color: #FFFFFF;
+            width: auto;
+
+            li {
+                border-bottom: none;
+            }
+        }
+
+        @media #{$mobile_s} {
+            left: 18px;
+            right: 18px;
+        }
+        @media #{$desktop} {
+            // box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            // webkit-box-shadow: 4px 4px 9px rgba(0,0,0,0.1);
+            // box-shadow: 4px 4px 9px rgba(0,0,0,0.1);
+
+            transition: transform 0.3s ease-in-out;
+            transform: translateY(-100%);
+
+            li {
+                font-size: .9em;
+            }
+        }
+
+        a {
+            font-weight: 400;
+            color: #333333;
+
+            @media #{$desktop} {
+                &:hover, &:focus {
+                    color: $color-green;
+                    outline: none;
+                    font-weight: 600;
+                }
+            }
+
+            @media #{$tablet} {
+                border-bottom: none;
+                padding: 0;
+                line-height: 40px;
+            }
+        }
+
+        li {
+            @media #{$tablet} {
+                height: 40px;
+                line-height: 40px;
+            }
+        }
+
+        .highlighted-item:first-child a {
+            @media #{$desktop} {
+                border-bottom: 1px #ccc solid;
+                margin-bottom: 12px;
+                padding-bottom: 12px;
+                padding-top: 0px;
+            }
+        }
+
+        .highlighted-item:last-child a {
+            @media #{$desktop} {
+                border-top: 1px #ccc solid;
+                margin-top: 12px;
+                padding-top: 12px;
+                padding-bottom: 0px;
+            }
+        }
+    }
+
+    .submenu-holder {
+        @media #{$desktop} {
+            position: absolute;
+            top: 90px;
+            left: 0px;
+            width: 100%;
+            overflow: hidden;
+
+            .goapostas-menu-image {
+                display: block;
+            }
+        }
+    }
+
+    //------------------------------------------------------
+    // Classes to hide / show submenus
+    //------------------------------------------------------
+
+    .submenu-show .sub-menu {
+        display: block;
+    }
+
+    .menu-item-has-children {
+
+        // override dynamically set height when content should be hidden
+        @media #{$desktop} {
+            &:not(.submenu-show) .submenu-holder {
+                height: 0px !important;
+            }
+        }
+
+        // override dynamically set height for mobile
+        @media #{$tablet} {
+            .submenu-holder {
+                height: auto !important;
+            }
+        }
+    }
+
+    .main-navigation > ul > li.submenu-anim-show {
+        > a {
+            color: $color-green;
+            font-weight: 600;
+
+            &:after {
+                color: $color-green;
+            }
+        }
+        .sub-menu {
+            opacity: 1;
+        }
+
+        &.menu-item-has-children > a:before {
+            transition-delay: 0s;
+        }
+
+        @media #{$desktop} {
+            .sub-menu {
+                transform: translateY(0px);
+            }
+
+            &.menu-item-has-children > a:after {
+                transform: rotate(180deg);
+            }
+
+            .menu-col-wrap {
+                opacity: 1;
+            }
+        }
+    }
+    .submenu-show:after {
+        content: "";
+        height: 2px;
+        background: #0da375;
+        display: block;
+        position: relative;
+        bottom: 2px;
+        @media #{$tablet} {
+            display: none;
+        }
+    }
+
+    //------------------------------------------------------
+    // Inside submenus
+    //------------------------------------------------------
+
+    .menu-col {
+        float: left;
+        margin-right: 30px;
+        width: calc(24% - 30px);
+
+        @media #{$desktop} {
+            &:nth-last-child(2) {
+                border-right: 1px solid #f1f2f6;
+            }
+            &:last-child {
+                margin-right: 0;
+                width: 28%;
+                a {
+                    padding: 0;
+                }
+            }
+        }
+
+        @media #{$tablet} {
+            width: 100%;
+
+            &:last-child .menu-item:last-child {
+                margin-bottom: 3em;
+            }
+        }
+    }
+
+    .menu-col-wrap {
+        @include clearfix;
+        // display: inline-block;
+        max-width: 1138px;
+        margin:0 auto;
+
+        @media #{$desktop} {
+            position: relative;
+            opacity: 0;
+            transition: opacity 0.15s ease-in-out 0.15s;
+        }
+
+        @media #{$tablet} {
+            width: 100%;
+        }
+    }
+
+    .goapostas-menu-image {
+        width: 100%;
+        display: none;
+
+        .menu-img-inner {
+
+        }
+
+        &:not(.menu-img-right) {
+            position: relative;
+        }
+
+        &.menu-img-right {
+            position: relative;
+            float: left;
+        }
+    }
+    .goapostas-menu-image-title {
+        position: absolute;
+        z-index: 1000;
+        color: #FFFFFF;
+        top: 50%;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        transform: translateY(-50%);
+        text-align: center;
+    }
+}
+
+//------------------------------------------------------
+// Admin bar
+//------------------------------------------------------
+
+body.admin-bar .header-navigation {
+    @media #{$tablet} {
+        top: 0;
+    }
+
+    @media #{$non-desktop} {
+        top: 0;
+    }
+}

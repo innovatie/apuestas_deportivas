@@ -1,0 +1,512 @@
+/* Casa de apostas */
+body .float-white{
+	position: relative;
+	top: -140px;
+	z-index: 99;
+	margin-left: 100px;
+	margin-right: 100px;
+	margin-bottom: -100px;
+
+	h3 {
+		width: 190px;
+		max-width: 100%;
+	}
+	.wpb_column{
+		padding-right: 30px;
+	}
+	@media #{$tablet}{
+		margin-left: 30px;
+		margin-right: 30px;
+		padding: 40px 50px!important;
+		.wpb_column{
+			padding-right: 30px;
+			&:nth-child(1){
+				max-width: 195px;
+			}
+		}
+	}
+	@media #{$mobile-l}{
+		margin-left: 15px;
+		margin-right: 15px;
+		padding: 40px 50px!important;
+		.vc_row{
+			.wpb_column{
+				text-align: center;
+				padding-right: 0px;
+				h3 {
+					margin-left: auto;
+					margin-right: auto;
+				}
+				&:nth-child(1){
+					max-width: 100%;
+					padding: 0 30px;
+					padding-bottom: 30px;
+				}
+				&:nth-child(2){
+					margin-bottom: 20px;
+				}
+			}
+		}
+	}
+}
+body .top-four-blocks{
+	position: relative;
+	top: -140px;
+	z-index: 99;
+	max-width: 980px;
+	margin: 0 auto;
+	margin-bottom: -50px;
+	@media #{$mobile}{
+		margin-left: 30px;
+		margin-right: 30px;
+	}
+	@media #{$mobile-s}{
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+	> .vc_row{
+		.wpb_column{
+			position: relative;
+			&:after{
+				content: "";
+				position: absolute;
+				top: -18px;
+				right: 0;
+				display: block;
+				width: 1px;
+				height: 100px;
+				background: $color-gray-light;
+			}
+			&:nth-last-child(1){
+				&:after{
+					display: none;
+				}
+			}
+			a{
+				text-decoration: none;
+				color: $color-back;
+				&:nth-last-child(1){
+					&:after{
+						content: "\e901";
+					    width: 12px;
+					    height: 7px;
+					    color: #0da375;
+					    font-family: icomoon!important;
+					    margin: 0 auto;
+					    font-size: 7px;
+					    position: relative;
+					    display: block;
+					    margin-top: 10px;
+					    text-align: center;
+					}
+				}
+			}
+		}
+		@media #{$mobile}{
+			.wpb_column{
+				width: 50%;
+				float: left;
+				margin-bottom: 40px;
+				&:nth-child(2){
+					&:after{
+						display: none;
+					}
+				}
+			}
+		}
+		@media #{$mobile-s}{
+			.wpb_column{
+				width: 100%;
+				&:after{
+					display: none;
+				}
+				&:nth-last-child(1){
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+}
+body .c-four-blocks{
+	position: relative;
+	max-width: 980px;
+	margin: 0 auto;
+	@media #{$mobile}{
+		margin-left: 30px;
+		margin-right: 30px;
+	}
+	@media #{$mobile-s}{
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+	> .vc_row{
+		.wpb_column{
+			position: relative;
+			&:after{
+				content: "";
+				position: absolute;
+				top: -18px;
+				right: 0;
+				display: block;
+				width: 1px;
+				height: 100px;
+				background: $color-gray-light;
+			}
+			&:nth-last-child(1){
+				&:after{
+					display: none;
+				}
+			}
+			a{
+				text-decoration: none;
+				color: $color-back;
+				&:nth-last-child(1){
+					&:after{
+						content: "\e901";
+						width: 12px;
+						height: 7px;
+						color: $color-green;
+						font-family: icomoon!important;
+						margin: 0 auto;
+						font-size: 7px;
+						position: relative;
+						display: block;
+						margin-top: 10px;
+						text-align: center;
+					}
+				}
+			}
+		}
+		@media #{$mobile}{
+			.wpb_column{
+				width: 50%;
+				float: left;
+				margin-bottom: 40px;
+				&:nth-child(2){
+					&:after{
+						display: none;
+					}
+				}
+			}
+		}
+		@media #{$mobile-s}{
+			.wpb_column{
+				width: 100%;
+				&:after{
+					display: none;
+				}
+				&:nth-last-child(1){
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+}
+.hero-parph{
+	p{
+		max-width: 660px;
+		margin: 0 auto;
+	}
+}
+.z-nine{
+	z-index: 9;
+}
+.dark-reviews-container{
+	position: relative;
+	display: block;
+	clear: both;
+	.top-three{
+		display: flex;
+		max-width: 980px;
+		margin: 0 auto;
+		padding-bottom: 80px;
+		border-bottom: 1px solid $color-gray-light;
+		.review-block-dark{
+			width: 100%;
+		}
+		@media #{$tablet}{
+			margin-left: 30px;
+			margin-right: 30px;
+		}
+		@media #{$tablet-medium}{
+			margin-left: 0;
+			margin-right: 0;
+			.review-block-dark{
+				width: 32%;
+			}
+		}
+		@media #{$mobile-l}{
+			.review-block-dark{
+				width: 31%;
+			}
+		}
+		@media #{$mobile-m}{
+			display: block;
+			padding-left: 15px;
+			padding-right: 15px;
+			padding-bottom: 30px;
+			.review-block-dark{
+				margin: 0;
+				margin-bottom: 30px;
+				width: 100%;
+				padding-left: 20px;
+				padding-right: 20px;
+				padding-top: 40px;
+				.image-container{
+					padding-left: 55px;
+				}
+				.number-review{
+					font-size: 40px;
+				    position: absolute;
+				    top: 40px;
+				    left: 37px;
+				}
+			}
+		}
+	}
+	.single-items{
+		display: block;
+		clear: both;
+		max-width: 980px;
+		margin: 0 auto;
+		&:after {
+				clear: both;
+				content: '';
+				display: table;
+		}
+		.cont-items{
+			width: 100%;
+			float: left;
+			padding: 24px 38px;
+			border-bottom: 1px solid $color-gray-light;
+		}
+		.number{
+			width: 70px;
+			float: left;
+			font-weight: bold;
+			color: $color-back;
+			font-size: 22px;
+			padding: 3px 0;
+		}
+		.icon-bet{
+			width: 80px;
+			float: left;
+			padding: 5px 0;
+		}
+		.dsc-cnt-s{
+			width: 430px;
+			float: left;
+			.stars{
+				width: 205px;
+				float: left;
+				text-align: center;
+				padding: 9px 0px;
+				letter-spacing: 0px;
+				i{
+					color: $color-yellow;
+					font-size: 33px;
+					width: 20px;
+					display: inline-block;
+					
+					&:before {
+						left: -9px;
+						position: relative;
+					}
+				}
+			}
+			.bonus{
+				width: 130px;
+				float: left;
+				font-weight: bold;
+				color: $color-back;
+				padding: 9px 0;
+			}
+			.quote{
+				width: 95px;
+				float: left;
+				color: $color-back;
+				font-weight: bold;
+				padding: 9px 0;
+				img,i{
+					display: inline-block;
+					color: $color-green;
+					max-width: 16px;
+					margin-right: 12px;
+					font-size: 18px;
+				}
+			}
+			@media #{$tablet-medium}{
+				width: 180px;
+				padding-left: 55px;
+				.stars,
+				.bonus,
+				.quote{
+					width: 100%;
+					text-align: left;
+					padding: 0 0;
+				}
+			}
+		}
+		&.hide-single{
+			display: none;
+		}
+		.item-cta {
+			display: flex;
+			flex-wrap: nowrap;
+		}
+		.btn-first,
+		.btn-second{
+			width: 160px;
+			float: left;
+			margin: 0 3px;
+			a{
+				display: block;
+				padding-left: 5px;
+				padding-right: 5px;
+				text-align: center;
+			}
+			@media #{$tablet-medium}{
+				width: 130px;
+			}
+		}
+		@media #{$tablet-medium}{
+			.cont-items{
+				width: 100%;
+				padding-left: 30px;
+				padding-right: 30px;
+				
+				align-items: center;
+				display: flex;
+				justify-content: space-between;
+
+				&::after {
+					display: none;
+				}
+			}
+		}
+		@media #{$mobile-l}{
+			max-width: 290px;
+			margin: 0 auto;
+			.cont-items{
+				display: block;
+				padding-left: 30px;
+				padding-right: 30px;
+				padding-bottom: 10px;
+				padding-top: 20px;
+
+				&:after {
+					display: table;
+				}
+			}
+			.number{
+				width: 47px;
+			}
+			.icon-bet{
+				width: 80px;
+			}
+			.dsc-cnt-s{
+				padding-left: 0;
+				width: 100%;
+				padding-bottom: 30px;
+				.stars{
+					i{
+						margin: 0 3px;
+					}
+				}
+				.bonus,
+				.quote{
+					width: 50%;
+				}
+				.quote{
+					text-align: right;
+				}
+			}
+			.item-cta {
+				display: block;
+			}
+			.btn-first,
+			.btn-second{
+				clear: both;
+				width: 230px;
+				margin: 0 auto;
+				margin-bottom: 10px;
+				float: none;
+			}
+		}
+		@media #{$mobile-m}{
+			width: 100%;
+			max-width: 100%;
+			float: left;
+			.cont-items{
+				max-width: 290px;
+				margin: 0 auto;
+				float: none;
+			}
+		}
+	}
+	@media #{$tablet-medium}{
+		.wrap{
+			max-width: 100%;
+		}
+	}
+	@media #{$mobile-xs}{
+		.single-items{
+			.cont-items{
+				max-width: 100%;
+				.btn-first,
+				.btn-second{
+					width: 100%;
+				}
+			}
+		}
+	}
+}
+.hid-ovf{
+	/*overflow-x: hidden;*/
+	padding-left: 15px;
+	padding-right: 15px;
+}
+/* Top casa de apostas Section */
+.tc-apostas{
+	max-width: 1180px;
+    margin-left: auto;
+    margin-right: auto;
+    .wpb_column{
+    	&.vc_col-sm-4_5{
+    		width: 80%;
+    		float: left;
+    		.vc_column-inner{
+    			padding: 0 15px;
+    			.wpb_wrapper{
+    				.vc_col-sm-3 .vc_column-inner{
+    					padding: 0 10px;
+    					@media #{$tablet-big}{
+    						padding: 0 5px;
+    					}
+    					@media #{$mobile}{
+    						padding: 0 2px;
+    					}
+    				}
+    			}
+    		}
+    		@media #{$mobile}{
+    			width: 100%;
+    		}
+    	}
+    	&.vc_col-sm-1_5{
+    		width: 20%;
+    		float: left;
+    		.vc_column-inner{
+    			padding: 0 10px;
+    			@media #{$tablet-big}{
+    				padding: 0 5px;
+    			}
+    		}
+    		@media #{$mobile}{
+    			display: none;
+    		}
+    	}
+    }
+}
+
+

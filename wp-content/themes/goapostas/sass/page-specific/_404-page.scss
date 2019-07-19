@@ -1,0 +1,28 @@
+.error404 {
+	.sc-adverts{
+		padding-top: 80px;
+		.vc_column-inner{
+			background: $color-white;
+			padding-top: 60px;
+			padding-bottom: 60px;
+			h4{
+				margin-bottom: 0;
+			}
+			&:hover{
+				h4{
+					color: $color-white;
+				}
+			}
+			@media #{$mobile} {
+				h4{
+					width: 100%;
+					max-width: 100%;
+					text-align: center;
+				}
+			}
+		}
+	}
+	.pre-footer{
+		display: none;
+	}
+}

@@ -1,0 +1,33 @@
+// Layout
+$content-width: 100%;
+$container-size: 1170px;
+$desktop-large: 'only screen and (max-width: 1220px)';
+$desktop-medium: 'only screen and (max-width: 1200px)';
+$tablet-big: 'only screen and (max-width: 1150px)';
+$desktop: 'only screen and (min-width: 1024px)';
+$tablet: 'only screen and (max-width: 1023px)';
+$tablet-medium: 'only screen and (max-width: 960px)';
+$tablet-s: 'only screen and (max-width: 880px)';
+$mobile: 'only screen and (max-width: 768px)';
+$mobile-l: 'only screen and (max-width: 740px)';
+$mobile-lm: 'only screen and (max-width: 690px)';
+$mobile-m: 'only screen and (max-width: 620px)';
+$mobile-s: 'only screen and (max-width: 550px)';
+$mobile-xs: 'only screen and (max-width: 450px)';
+$non-desktop: 'only screen and (max-width: 767px)';
+
+//Focus homepage
+$focus-category-desktop: 'only screen and (min-width: 990px)';
+$focus-category-tablet: 'only screen and (min-width: 769px)';
+
+// Fonts
+$primary_font: 'ProximaNova';
+$secundary_font: 'NettoOT';
+
+// Colors
+$color-white: #ffffff;
+$color-black: #000000;
+$color-dark: #1d1d1b;
+$color-dark-hover: #0a0c0f;
+$color-yellow: #bea747;
+$color-blue: #252d37;

@@ -1,0 +1,308 @@
+/*-----------------------------------------------------------------------------------*/
+/* VC columns
+/*-----------------------------------------------------------------------------------*/
+
+// simplified version of function from vc css
+// we only use 'sm'
+$single_vc_col: 1 / 12;
+
+@for $vc_col from 1 through 12 {
+    @media (min-width: 768px) {
+
+        .vc_col-sm-#{$vc_col},
+        .vc_column_container.vc_col-sm-#{$vc_col} {
+            width: percentage($single_vc_col * $vc_col);
+        }
+    }
+}
+
+@for $vc_col from 1 through 12 {
+    @media (min-width: 1024px) {
+        .vc_col-md-#{$vc_col} {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        .vc_col-md-#{$vc_col},
+        .vc_column_container.vc_col-md-#{$vc_col} {
+            float: left;
+            width: percentage($single_vc_col * $vc_col);
+        }
+    }
+}
+
+@for $vc_col from 1 through 12 {
+    @media (min-width: 1200px) {
+        .vc_col-lg-#{$vc_col} {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        .vc_col-lg-#{$vc_col},
+        .vc_column_container.vc_col-lg-#{$vc_col} {
+            float: left;
+            width: percentage($single_vc_col * $vc_col);
+        }
+    }
+}
+
+.vc_col-xs-12,
+.vc_column_container {
+    width: 100%;
+}
+
+.row-five {
+    >.wpb_column {
+        width: 20%;
+        float: left;
+
+        >.vc_column-inner {
+            padding: 0 10px;
+
+            .vc_col-sm-12 {
+                padding: 0 15px;
+            }
+        }
+
+        @media #{$tablet-big} {
+            >.vc_column-inner {
+                padding: 0 5px;
+            }
+        }
+        @media #{$mobile} {
+            width: 25%;
+        }
+
+        @media #{$mobile-s} {
+            width: 100%;
+        }
+    }
+}
+
+.vc_col-lg-1,
+.vc_col-lg-10,
+.vc_col-lg-11,
+.vc_col-lg-12,
+.vc_col-lg-2,
+.vc_col-lg-3,
+.vc_col-lg-4,
+.vc_col-lg-5,
+.vc_col-lg-6,
+.vc_col-lg-7,
+.vc_col-lg-8,
+.vc_col-lg-9,
+.vc_col-md-1,
+.vc_col-md-10,
+.vc_col-md-11,
+.vc_col-md-12,
+.vc_col-md-2,
+.vc_col-md-3,
+.vc_col-md-4,
+.vc_col-md-5,
+.vc_col-md-6,
+.vc_col-md-7,
+.vc_col-md-8,
+.vc_col-md-9,
+.vc_col-sm-1,
+.vc_col-sm-10,
+.vc_col-sm-11,
+.vc_col-sm-12,
+.vc_col-sm-2,
+.vc_col-sm-3,
+.vc_col-sm-4,
+.vc_col-sm-5,
+.vc_col-sm-6,
+.vc_col-sm-7,
+.vc_col-sm-8,
+.vc_col-sm-9,
+.vc_col-xs-1,
+.vc_col-xs-10,
+.vc_col-xs-11,
+.vc_col-xs-12,
+.vc_col-xs-2,
+.vc_col-xs-3,
+.vc_col-xs-4,
+.vc_col-xs-5,
+.vc_col-xs-6,
+.vc_col-xs-7,
+.vc_col-xs-8,
+.vc_col-xs-9 {
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+
+    .vc_col-sm-1,
+    .vc_col-sm-10,
+    .vc_col-sm-11,
+    .vc_col-sm-12,
+    .vc_col-sm-2,
+    .vc_col-sm-3,
+    .vc_col-sm-4,
+    .vc_col-sm-5,
+    .vc_col-sm-6,
+    .vc_col-sm-7,
+    .vc_col-sm-8,
+    .vc_col-sm-9 {
+        float: left;
+    }
+}
+
+.vc_column_container>.vc_column-inner {
+    box-sizing: border-box;
+    // padding-left: 15px;
+    // padding-right: 15px;
+    width: 100%;
+}
+
+.vc_column-inner,
+.vc_row {
+
+    &:after,
+    &:before {
+        content: " ";
+        display: table;
+    }
+
+    &:after {
+        clear: both;
+    }
+}
+
+.vc_column_container {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/*-----------------------------------------------------------------------------------*/
+/* VC rows
+/*-----------------------------------------------------------------------------------*/
+.vc_row {
+    margin-left: -15px;
+    margin-right: -15px;
+
+    #main & {
+        // padding-top: 40px;
+        // padding-bottom: 5px;
+        max-width: $content_width;
+        margin-left: auto;
+        margin-right: auto;
+
+        @media #{$mobile} {
+            padding-top: 0px;
+            padding-bottom: 0px;
+        }
+    }
+}
+
+#main .vc_row[data-vc-full-width="true"] {
+    max-width: 100%;
+}
+
+#main .vc_row[data-vc-full-width="true"].vc_row-no-padding {
+    .vc_column_container>.vc_column-inner {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+.vc_column-gap-10 {
+    margin-left: -5px;
+    margin-right: -5px;
+
+    >.wpb_column {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
+
+/*-----------------------------------------------------------------------------------*/
+/* Other elemenets
+/*-----------------------------------------------------------------------------------*/
+
+.vc_figure {
+    margin: 0;
+}
+
+#content .wpb_alert p:last-child,
+#content .wpb_text_column :last-child,
+#content .wpb_text_column p:last-child,
+.vc_message_box>p:last-child,
+.wpb_alert p:last-child,
+.wpb_text_column :last-child,
+.wpb_text_column p:last-child {
+    margin-bottom: 0;
+}
+
+.wpb_button,
+.wpb_content_element,
+ul.wpb_thumbnails-fluid>li {
+    margin-bottom: 35px;
+}
+
+.wpb_content_element {
+
+    &:last-child {
+        margin-bottom: 0px;
+    }
+
+    @media #{$non-desktop} {
+        &.wpb_content_element {
+            // specificity
+            margin-bottom: 20px;
+
+            &:last-child {
+                margin-bottom: 0px;
+            }
+        }
+    }
+
+    a {
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+            text-decoration: underline;
+        }
+    }
+}
+
+/*-----------------------------------------------------------------------------------*/
+/* Optional additional classes (discourage use of custom margins / padding)
+/*-----------------------------------------------------------------------------------*/
+// for stacked text elements - allow smaller margin
+.wpb_text_column {
+    margin-bottom: 0px;
+}
+
+// double bottom margin
+#main .vc_row {
+    padding-bottom: 45px;
+}
+
+/*-----------------------------------------------------------------------------------*/
+/* Visual composer hidden through devices
+/*-----------------------------------------------------------------------------------*/
+
+@media screen and (min-width: 768px) and (max-width: 1023px)  {
+    .vc_hidden-sm {
+        display: none !important;
+    }
+}
+@media screen and (min-width: 1024px) and (max-width: 1199px)  {
+    .vc_hidden-md {
+        display: none !important;
+    }
+}
+@media screen and (min-width: 1200px) {
+    .vc_hidden-lg {
+        display: none !important;
+    }
+}
+@media screen and (max-width: 767px) {
+    .vc_hidden-xs {
+        display: none !important;
+    }
+}

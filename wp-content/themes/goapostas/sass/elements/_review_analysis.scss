@@ -1,0 +1,140 @@
+
+.review-analysis {
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid $color-gray-light;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 54px 80px;
+
+    .rva-l,
+    .rva-r {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+    }
+    .rva-l {
+        justify-content: flex-start;
+        width: 43.22%;
+    }
+    .rva-r {
+        width: 56.78%;
+    }
+    .rva-rl {
+        display: flex;
+        padding-left: 50px;
+
+        .rva-item {
+            margin-right: 45px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+    picture {
+        display: block;
+        height: 92px;
+        width: 180px;
+        margin-right: 40px;
+
+        img {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    h3 {
+        font-size: 32px;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+    h3, p {
+        line-height: normal;
+        margin-bottom: 0;
+    }
+
+    .stars-rating-wrap .stars-evaluation {
+        color: $color-gray-dark;
+    }
+
+    .btn-solid {
+        padding-left: 26px;
+        padding-right: 26px;
+    }
+
+    @media  #{$desktop-large} {
+        padding: 40px 30px;
+
+        .rva-rl {
+            padding-left: 15px;
+            padding-right: 10px;
+        }
+        picture {
+            margin-right: 20px;
+            height: 70px;
+            width: 137px;
+        }
+        h3 {
+            font-size: 1.5em;
+        }
+        p {
+            font-size: 0.875em;
+        }
+    }
+
+    @media #{$tablet} {
+        .btn-solid {
+            max-width: 100%;
+            width: 150px;
+            padding: 12px 5px;
+            text-align: center;
+        }
+        .rva-rl {
+            .rva-item {
+                margin-right: 20px;
+            }
+        }
+    }
+
+    @media  #{$mobile} {
+        display: block;
+        padding-top: 30px;
+        padding-bottom: 30px;
+
+        .rva-l,
+        .rva-r {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 138px;
+        }
+        picture,
+        .stars-rating-wrap  {
+            margin-bottom: 20px;
+        }
+        .rva-rl {
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-left: 0;
+            padding-right: 0;
+            width: 100%;
+
+            .rva-item {
+                margin-right: 0;
+                white-space: nowrap;
+            }
+            .rva-item:last-child h3 {
+                font-size: 12px;
+                line-height: 2.92em;
+                max-width: 82px;
+                overflow-x: hidden;
+                text-overflow: ellipsis;
+                font-weight: 600;
+            }
+        }
+    }
+}

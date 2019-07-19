@@ -1,0 +1,67 @@
+/*!
+Theme Name: goapostas
+Theme URI:
+Author:
+Author URI:
+Description: based of _s
+Version: 1.1.5
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: goapostas
+Tags:
+*/
+
+// Settings
+@import 'util/fonts';
+@import 'util/icons';
+@import 'util/slick-theme';
+@import 'util/slick';
+@import 'settings';
+@import 'mixins/all';
+
+// Dependencies
+@import '../vendor/bourbon/bourbon';
+@import '../vendor/neat/neat';
+@import '../vendor/fontawesome/font-awesome';
+
+// Util
+@import 'util/normalize';
+
+// Layouts
+
+
+// Global
+@import 'global/header';
+@import 'global/menu';
+@import 'global/datepicker';
+@import 'global/main-content';
+@import 'global/sidebar';
+@import 'global/footer';
+@import 'global/media';
+@import 'global/typography';
+@import 'global/widgets';
+
+// Elements
+@import 'elements/vc';
+@import 'elements/hero';
+@import 'elements/featured_box';
+@import 'elements/betting_block';
+@import 'elements/cta';
+@import 'elements/bonus_box';
+@import 'elements/sharing_block';
+@import 'elements/review_analysis';
+@import 'elements/langs_block';
+@import 'elements/corporate_info';
+@import 'elements/comments';
+@import 'elements/quote_block';
+@import 'elements/ad_block';
+@import 'elements/ad-location';
+
+// Page specific
+@import 'page-specific/404-page';
+@import 'page-specific/page';
+@import 'page-specific/home-page';
+@import 'page-specific/quem_somos';
+@import 'page-specific/casa_de_apostas';
+@import 'page-specific/review_detail';
+@import 'page-specific/article_detail';

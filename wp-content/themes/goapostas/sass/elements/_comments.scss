@@ -1,0 +1,303 @@
+
+.sc-comments {
+    background-color: $color-gray-light;
+    color: $color-black;
+    padding: 100px 0;
+
+    .wrap {
+        width: 982px;
+        max-width: 100%;
+    }
+
+    .logged-in-as {
+        display: none;
+    }
+
+    .comment-form-comment {
+        background-color: #fff;
+        display: block;
+        padding: 15px 0;
+        padding-right: 20px;
+        position: relative;
+        margin-bottom: 20px;
+
+        label,
+        .reply-title {
+            display: none;
+        }
+
+        picture {
+            background-color: #f4f4f4;
+            content: '';
+            display: block;
+            height: 60px;
+            width: 60px;
+            position: absolute;
+            top: 30px;
+            left: 25px;
+            z-index: 10;
+
+            &:before {
+                background: url(assets/images/icon-user.png) scroll 0 0 no-repeat;
+                background-size: 100% auto;
+                content: '';
+                display: block;
+                height: 20px;
+                width: 17px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 12;
+            }
+        }
+    }
+
+    h3 {
+        font-size: 1em;
+        margin-bottom: 60px;
+
+        .icon-comments {
+            background: url(assets/images/icon-comments.png) scroll 0 0 no-repeat;
+            background-size: 100% auto;
+            display: inline-block;
+            height: 20px;
+            position: relative;
+            top: 4px;
+            width: 22px;
+        }
+
+        i {
+            font-size: 20px;
+            margin-right: 20px;
+        }
+    }
+
+    textarea {
+        border: 0 none;
+        box-sizing: border-box;
+        display: block;
+        min-height: 90px;
+        padding: 10px 30px;
+        width: calc(100% - 80px);
+        margin-left: 80px;
+        padding-top: 35px;
+
+        &:focus {
+            box-shadow: none;
+            outline: 0;
+            position: relative;
+            z-index: 5;
+        }
+    }
+
+    .form-submit {
+        margin: 0;
+        position: relative;
+
+        margin-bottom: 45px;
+
+        input[type="submit"] {
+            background: #1959a1;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+            outline: 0;
+            color: #fff;
+            padding: 14px 35px;
+            -webkit-appearance: none;
+        }
+    }
+
+    .comment-form-author,
+    .comment-form-email,
+    .comment-form-url {
+        position: relative;
+        
+        label {
+            font-size: 0.875em;
+            display: none;
+            position: absolute;
+            right: 20px;
+
+            span {
+                display: none;
+            }
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="url"] {
+            background-color: #fff;
+            border: 1px solid $color-gray-light;
+            box-sizing: border-box;
+            font-size: 16px;
+            font-weight: normal;
+            line-height: 20px;
+            color: $color-black;
+            padding: 19px 20px;
+            outline: 0;
+            width: 100%;
+        }
+    }
+
+    .comment-form-author,
+    .comment-form-email {
+        margin-bottom: 20px;
+    }
+
+    .comment-form-cookies-consent {
+        @include checkbox-mix;
+    }
+
+    .must-log-in {
+        color: inherit;
+        font-size: 0.750em;
+        font-weight: normal;
+        line-height: 1.5;
+    }
+
+    .comment-status {
+        font-size: 0.875em;
+        line-height: normal;
+
+        .error {
+            color: $color-red;
+        }
+    }
+
+    @media screen and (max-width: 1200px) {
+        padding: 80px 30px;
+    }
+
+    @media #{$tablet} {
+        .comment-list {
+            .comment-content {
+                padding-right: 10px;
+            }
+        }
+    }
+    @media #{$mobile} {
+        padding: 60px 15px;
+
+        h3 {
+            border-bottom: 1px solid #fff;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+        }
+        .comment-form-comment {
+            padding: 10px 0;
+            padding-right: 5px;
+
+            picture {
+                height: 40px;
+                width: 40px;
+            }
+        }
+        textarea {
+            min-height: 50px;
+            padding: 10px;
+            padding-top: 30px;
+        }
+        .comment-list {
+            .comment-content {
+                padding: 0 20px 20px;
+
+                >p:last-child {
+                    margin-bottom: 0;
+                }
+            }
+            .comment-meta {
+                padding-bottom: 20px;
+            }
+            .comment-meta img {
+                height: 40px;
+                width: 40px;
+            }
+            .comment-meta .fn {
+                padding-top: 0;
+            }
+        }
+    }
+}
+
+.comment-list {
+    list-style: none;
+    padding: 0;
+
+    >li {
+        list-style: none;
+    }
+    .comment {
+        background: #fff;
+        color: $color-back;
+        font-size: 12px;
+        font-weight: normal;
+        line-height: normal;
+
+        &:not(:last-child) {
+            margin-bottom: 20px;
+        }
+    }
+    .comment-meta {
+        padding: 20px 20px 30px;
+        &:after {
+            content: '';
+            clear: both;
+            display: table;
+        }
+        a {
+            color: inherit;
+        }
+        img {
+            float: left;
+            margin-right: 20px;
+            height: 60px;
+            width: 60px;
+        }
+        .fn {
+            display: block;
+            padding-top: 11px;
+            font-weight: normal;
+        }
+        .says {
+            display: none;
+        }
+    }
+
+    .comment-content {
+        font-size: 16px;
+        font-stretch: normal;
+        line-height: 2.13;
+        padding: 0 100px 20px;
+    }
+
+    .reply {
+        display: none;
+        padding: 0 100px 20px;
+    }
+}
+
+.comment-navigation {
+    padding-top: 20px;
+
+    a {
+        border: solid 1px $color-green;
+        display: block;
+        font-family: Poppins;
+        font-size: 16px;
+        font-weight: bold;
+        height: 80px;
+        line-height: 22px;
+        padding: 29px 10px;
+        text-align: center;
+        color: $color-green;
+        &:hover{
+            color: $color-green-dark;
+            border-color: $color-green-dark;
+        }
+    }
+
+    .nav-next {
+        display: none;
+    }
+}

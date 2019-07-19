@@ -1,0 +1,29 @@
+a{
+	&.btn-solid{
+		background: $color-dark;
+		text-decoration: none;
+		&:hover{
+			background: $color-dark-hover;
+		}
+		&.secondary{
+			background: $color-yellow;
+			padding-left: 30px;
+			padding-right: 30px;
+		}
+	}
+}
+.featured-box{
+	h6{
+		color: $color-dark;
+	}
+	&:hover{
+		h6{
+			color: $color-yellow;
+		}
+		>picture:after{
+			background: url(assets/images/hero-deg.png);
+			background-size: 100% 100%;
+			opacity: .9;
+		}
+	}
+}

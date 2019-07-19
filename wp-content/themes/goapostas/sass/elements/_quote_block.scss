@@ -1,0 +1,67 @@
+.quote-block {
+
+    blockquote {
+        border: 0 none;
+        color: $color-black;
+        max-width: 100%;
+        width: 780px;
+        font-size: 32px;
+        font-weight: 200;
+        line-height: 1.44;
+        margin: 0;
+        padding: 0;
+        position: relative;
+
+        &:after,
+        &:before {
+            background-size: 100% 100%;
+            content: "\e900";
+            color: $color-green;
+            display: inline-block;
+            font-family: icomoon!important;
+            font-size: 32px;
+            height: 21px;
+            line-height: 21px;
+            margin-top: 10px;
+            position: absolute;
+            width: 24px;
+        }
+        &:before {
+            left: -40px;
+            top: 0;
+        }
+        &::after {
+            display: inline-block;
+            margin-left: 24px;
+            left: auto;
+            top: auto;
+            transform: rotate(180deg);
+        }
+    }
+
+    @media #{$tablet} {
+        blockquote {
+            color: $color-gray-dark;
+            font-weight: 200;
+            line-height: 1.64;
+        }
+    }
+    @media #{$mobile} {
+        blockquote {
+            font-size: 22px;
+            &:before {
+                display: block;
+                position: static;
+                padding-bottom: 15px;
+                left: 0;
+                top: -48px;
+            }
+            &:after {
+                margin-left: 15px;
+                margin-top: 0;
+                position: relative;
+                top: 8px;
+            }
+        }
+    }
+}

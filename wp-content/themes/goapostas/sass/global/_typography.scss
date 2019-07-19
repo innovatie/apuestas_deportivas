@@ -1,0 +1,142 @@
+body {
+    font-family: $primary_font;
+    font-size: 1em; //16px
+    line-height: 2.13;
+    background-color: #fff;
+    color: $color-gray-dark;
+}
+
+small{
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 1.5;
+}
+
+.intro-text{
+    p{
+        font-size: 24px;
+        line-height: 1.92;
+        font-weight: normal;
+        @media #{$mobile-s}{
+            font-size: 22px;
+        }
+    }
+}
+
+.white-text{
+    *{
+        color: $color-white;
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: bold;
+    font-family: $primary_font;
+    color: $color-back;
+    line-height: normal;
+    margin: .8em 0 .4em;
+    margin-top: 0;
+}
+
+h1 {
+    font-size: 4.375em;
+    @media #{$mobile}{
+        font-size: 3.75em;   
+    }
+    @media #{$mobile-s}{
+        font-size: 2.63em;
+    }
+}
+
+h2 {
+    font-size: 2.500em;
+
+    @media #{$mobile-s}{
+        font-size: 2em;
+    }
+}
+
+h3 {
+    font-size: 1.625em;
+}
+
+h4 {
+    font-size: 1.375em;
+}
+
+h5 {
+    font-size: 1.125em;
+}
+
+h6 {
+    font-size: 1em;
+}
+
+p {
+    margin: 0 0 10px 0;
+}
+
+a {
+    text-decoration: none;
+    box-sizing: border-box;
+    &.btn-solid{
+        background: $color-green;
+        color: $color-white;
+        font-weight: 500;
+        line-height: normal;
+        display: inline-block;
+        padding: 14px;
+        &:hover{
+            background: $color-green-dark;
+        }
+
+        &.secondary {
+            background-color: $color-blue;
+            padding-left: 60px;
+            padding-right: 60px;
+            &:hover {
+                background-color: $color-blue-dark;
+            }
+        }
+
+        &.btn-x-lg {
+            padding-left: 62px;
+            padding-right: 62px;
+        }
+    }
+    &.btn-outline{
+        background: none;
+        border: 1px solid $color-green;
+        color: $color-green;
+        font-weight: 500;
+        line-height: normal;
+        display: inline-block;
+        padding: 14px;
+        &:hover{
+            border-color: $color-green-dark;
+            color: $color-green-dark;
+        }
+    }
+}
+
+.dark-reviews-container{
+    a{
+        &.btn-solid{
+            &.secondary{
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+        }
+    }
+}
+
+@media #{$non-desktop} {
+    h2 {
+        font-size: 2em;
+    }
+}

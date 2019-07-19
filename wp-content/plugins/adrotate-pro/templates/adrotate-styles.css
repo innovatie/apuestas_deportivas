@@ -1,0 +1,12 @@
+/* styles for advert statuses */
+.adrotate_active td { border-color:#ededed; }
+.adrotate_error td { background-color:#ffffe0; border-color:#e6db55; }
+.adrotate_urgent td { background-color:#ffebe8; border-color:#c00; }
+.adrotate_inactive td { background-color:#ebf3fa; border-color:#466f82; }
+
+/* styles for graphs and dates */
+.adrotate_label { font-size: 12px; margin: auto 0; padding:5px; font-weight: bold }
+.adrotate_clicks { color: #5Af; font-weight: normal }
+.adrotate_impressions { color: #F80; font-weight: normal }
+.adrotate_stats_large { display: block; margin-bottom: 10px; margin-top: 10px; text-align: center; font-weight: bold; }
+.adrotate_large { margin: 10px; font-size: 170%; }

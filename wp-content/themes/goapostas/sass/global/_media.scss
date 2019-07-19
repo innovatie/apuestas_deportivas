@@ -1,0 +1,18 @@
+img {
+  max-width: 100%;
+  display:block;
+  height: auto;
+}
+img.aligncenter {
+    margin: 0 auto;
+}
+
+#primary.content-area {
+
+    .video-wrapper iframe {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+}

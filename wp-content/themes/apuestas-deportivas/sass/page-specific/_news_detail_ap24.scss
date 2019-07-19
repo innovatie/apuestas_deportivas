@@ -1,0 +1,13 @@
+.single-news{
+	@media #{$mobile}{
+		.wpb_wrapper{
+			>.vc_row-fluid{
+				margin-left: 0;
+	    		margin-right: 0;
+			}
+			.wpb_text_column{
+				padding-left: 0 !important;
+			}
+		}	
+	}
+}
