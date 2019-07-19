@@ -4,6 +4,40 @@
         background-size: cover;
         opacity: .9;
     }
+    .wrap{
+    	text-align: left;
+    	h1{
+    		text-align: left;
+    	}
+    	p{
+    		float: left;
+    		clear: both;
+    	}
+    }
+    .scroll-to-sc{
+    	display: none;
+    }
+    .hero-parph{
+    	p{
+    		margin-bottom: 25px;
+    		&:nth-last-child(1){
+    			margin-bottom: 0;
+    		}
+    	}
+    	a{
+    		padding: 14px 30px;
+    		color: $color-white;
+    		background: transparent;
+    		border: 2px solid $color-white;
+    		display: inline-block;
+    		font-size: 16px;
+    		line-height: 16px;
+    		&:hover{
+    			background: $color-blue;
+    			border-color: $color-blue;
+    		}
+    	}
+    }
 }
 .link-cta{
     color: $color-yellow;
