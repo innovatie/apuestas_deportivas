@@ -33,8 +33,8 @@ function adrotate_export_stats() {
 		// Sort out start dates
 		if(strlen($start_date) > 0) {
 			$from_name = $start_date;
-			list($start_year, $start_month, $start_day) = explode('-', $start_date);
-			$start_date = mktime($start_hour, $start_minute, 0, $start_month, $start_day, $start_year);
+			list($start_day, $start_month, $start_year) = explode('-', $start_date);
+			$start_date = mktime(0, 0, 0, $start_month, $start_day, $start_year);
 		} else {
 			$from_name = 'invalid';
 			$start_date = 0;
@@ -43,8 +43,8 @@ function adrotate_export_stats() {
 		// Sort out end dates
 		if(strlen($end_date) > 0) {
 			$until_name = $end_date;
-			list($end_year, $end_month, $end_day) = explode('-', $end_date);
-			$end_date = mktime($end_hour, $end_minute, 0, $end_month, $end_day, $end_year);
+			list($end_day, $end_month, $end_year) = explode('-', $end_date);
+			$end_date = mktime(23, 59, 0, $end_month, $end_day, $end_year);
 		} else {
 			$until_name = 'invalid';
 			$end_date = 0;
@@ -290,7 +290,6 @@ function adrotate_export_ads($ids) {
 			'bannercode' => stripslashes($export['bannercode']),
 			'imagetype' => (empty($export['imagetype'])) ? null : $export['imagetype'],
 			'image' => (empty($export['image'])) ? null : $export['image'],
-			'paid' => $export['paid'],
 			'tracker' => $export['tracker'],
 			'desktop' => $export['desktop'],
 			'mobile' => $export['mobile'],
@@ -316,7 +315,7 @@ function adrotate_export_ads($ids) {
 		
 		if($fp) {
 			$generated = array('Generated', date_i18n("M d Y, H:i:s"));
-			$keys = array('id', 'name', 'bannercode', 'imagetype', 'image_url', 'is_paid', 'enable_stats', 'show_desktop', 'show_mobile', 'show_tablet', 'show_ios', 'show_android', 'show_otheros', 'weight', 'budget', 'click_rate', 'impression_rate', 'geo_cities', 'geo_countries', 'schedule_start', 'schedule_end');
+			$keys = array('id', 'name', 'bannercode', 'imagetype', 'image_url', 'enable_stats', 'show_desktop', 'show_mobile', 'show_tablet', 'show_ios', 'show_android', 'show_otheros', 'weight', 'budget', 'click_rate', 'impression_rate', 'geo_cities', 'geo_countries', 'schedule_start', 'schedule_end');
 
 			fputcsv($fp, $generated);
 			fputcsv($fp, $keys);

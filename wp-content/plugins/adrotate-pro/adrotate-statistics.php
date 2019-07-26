@@ -225,7 +225,7 @@ function adrotate_stats_graph($type, $archive = false, $id, $chartid, $start, $e
 		$impressions = trim($impressions, ",");
 		
 		$output = '';
-		$output .= '<div id="chart-'.$chartid.'" style="height:'.$height.'px; width:100%;"></div>';
+		$output .= '<div id="chart-'.$chartid.'" style="height:'.$height.'px; width:100%;  position: relative;"></div>';
 		$output .= adrotate_draw_graph($chartid, $dates, $clicks, $impressions);
 		unset($stats, $graph, $dates, $clicks, $impressions);
 	} else {

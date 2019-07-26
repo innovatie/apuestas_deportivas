@@ -53,20 +53,20 @@ class ajdg_nwidgets extends WP_Widget {
 
 		if($adrotate_config['w3caching'] == 'Y') {
 			echo '<!-- mfunc '.W3TC_DYNAMIC_SECURITY.' -->';
-			echo 'echo '.$instance['before'].'adrotate_group('.$instance['groupid'].', 0, 0, '.$instance['network'].')'.$instance['after'].';';
+			echo 'echo '.$instance['before'].'adrotate_group('.$instance['groupid'].', 0, 0, 1)'.$instance['after'].';';
 			echo '<!-- /mfunc '.W3TC_DYNAMIC_SECURITY.' -->';
 		} else if($adrotate_config['borlabscache'] == 'Y') {
 		    if(class_exists('\Borlabs\Factory') AND \Borlabs\Factory::get('Cache\Config')->get('cacheActivated') == 'yes') {
 	            $borlabsphrase = \Borlabs\Factory::get('Cache\Config')->get('fragmentCachingMaskPhrase');
 	
 				echo '<!--[borlabs cache start: '.$borlabsphrase.']--> ';
-				echo $instance['before'].adrotate_group($instance['groupid'], 0, 0, $instance['network']).$instance['after'];
+				echo $instance['before'].adrotate_group($instance['groupid'], 0, 0, 1).$instance['after'];
 				echo ' <!--[borlabs cache end: '.$borlabsphrase.']-->';
 			} else {
 				echo '<!-- Borlabs Cache does not appear to be active -->';
 			}
 		} else {
-			echo $instance['before'].adrotate_group($instance['groupid'], 0, 0, $instance['network']).$instance['after'];
+			echo $instance['before'].adrotate_group($instance['groupid'], 0, 0, 1).$instance['after'];
 		}
 				
 		if($adrotate_config['widgetalign'] == 'Y') echo '</li></ul>';

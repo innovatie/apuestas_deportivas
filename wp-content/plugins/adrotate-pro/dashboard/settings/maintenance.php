@@ -48,8 +48,8 @@
 			<br /><br />
 			<label for="adrotate_db_cleanup_schedules"><input type="checkbox" name="adrotate_db_cleanup_schedules" value="1" /> <?php _e('Delete expired schedules.', 'adrotate-pro'); ?></label><br />
 			<label for="adrotate_db_cleanup_statistics"><input type="checkbox" name="adrotate_db_cleanup_statistics" value="1" /> <?php _e('Delete stats older than 356 days.', 'adrotate-pro'); ?></label><br />
-			<label for="adrotate_db_cleanup_bin"><input type="checkbox" name="adrotate_db_cleanup_bin" value="1" /> <?php _e('Delete all adverts and their data from the bin.', 'adrotate-pro'); ?></label><br />
-			<span class="description"><?php _e('For when you create an advert, group or schedule and it does not save or keep changes you make.', 'adrotate-pro'); ?><br /><?php _e('Additionally you can delete old schedules, statistics, binned adverts. Running this routine from time to time will improve the speed of your site.', 'adrotate-pro'); ?></span>
+			<label for="adrotate_db_cleanup_trash"><input type="checkbox" name="adrotate_db_cleanup_trash" value="1" /> <?php _e('Delete all adverts and their data from the trash.', 'adrotate-pro'); ?></label><br />
+			<span class="description"><?php _e('For when you create an advert, group or schedule and it does not save or keep changes you make.', 'adrotate-pro'); ?><br /><?php _e('Additionally you can delete old schedules, statistics, trashed adverts. Running this routine from time to time will improve the speed of your site.', 'adrotate-pro'); ?></span>
 		</td>
 	</tr>
 </table>
@@ -102,8 +102,8 @@
 		<td><?php if(!$adschedule) '<span style="color:#CC2900;">'._e('Not scheduled!', 'adrotate-pro').'</span>'; else echo '<span style="color:#009900;">'.date_i18n(get_option('date_format')." H:i", $adschedule).'</span>'; ?></td>
 	</tr>
 	<tr>
-		<th width="15%"><?php _e('Delete adverts from bin', 'adrotate-pro'); ?></th>
-		<td><?php if(!$bin) '<span style="color:#CC2900;">'._e('Not scheduled!', 'adrotate-pro').'</span>'; else echo '<span style="color:#009900;">'.date_i18n(get_option('date_format')." H:i", $bin).'</span>'; ?></td>
+		<th width="15%"><?php _e('Delete adverts from trash', 'adrotate-pro'); ?></th>
+		<td><?php if(!$trash) '<span style="color:#CC2900;">'._e('Not scheduled!', 'adrotate-pro').'</span>'; else echo '<span style="color:#009900;">'.date_i18n(get_option('date_format')." H:i", $trash).'</span>'; ?></td>
 		<th width="15%"><?php _e('Clean Trackerdata', 'adrotate-pro'); ?></th>
 		<td><?php if(!$tracker) '<span style="color:#CC2900;">'._e('Not scheduled!', 'adrotate-pro').'</span>'; else echo '<span style="color:#009900;">'.date_i18n(get_option('date_format')." H:i", $tracker).'</span>'; ?></td>
 	</tr>

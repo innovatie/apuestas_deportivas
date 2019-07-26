@@ -10,8 +10,8 @@
 ------------------------------------------------------------------------------------ */
 
 $user = get_user_by('id', $user_id);
-$alladverts = $wpdb->get_results("SELECT `ad`, `title`, `type` FROM `{$wpdb->prefix}adrotate`, `{$wpdb->prefix}adrotate_linkmeta` WHERE `user` = {$user->ID} AND `{$wpdb->prefix}adrotate`.`id` = `ad` AND `type` != 'empty' AND `type` != 'a_empty' ORDER BY `{$wpdb->prefix}adrotate`.`id` ASC;");
-$status = array('active' => 'Active', 'queue' => 'Awaiting Moderation', 'archived' => 'Archived', 'bin' => 'Binned');
+$alladverts = $wpdb->get_results("SELECT `ad`, `title`, `type` FROM `{$wpdb->prefix}adrotate`, `{$wpdb->prefix}adrotate_linkmeta` WHERE `user` = '{$user->ID}' AND `{$wpdb->prefix}adrotate`.`id` = `ad` AND `type` != 'empty' AND `type` != 'a_empty' ORDER BY `{$wpdb->prefix}adrotate`.`id` ASC;");
+$status = array('active' => 'Active', 'queue' => 'Awaiting Moderation', 'archived' => 'Archived', 'trash' => 'Trashed');
 ?>
 <h2><?php _e('Contact your Advertiser', 'adrotate-pro'); ?></h2>
 
@@ -24,7 +24,7 @@ $status = array('active' => 'Active', 'queue' => 'Awaiting Moderation', 'archive
 		<tbody>
 		    <tr>
 				<th width="15%"><?php _e('Subject', 'adrotate-pro'); ?></th>
-				<td><label for="adrotate_subject"><input tabindex="1" id="adrotate_subject" name="adrotate_subject" type="text" size="50" class="search-input" value="" autocomplete="off" /></label>
+				<td><label for="adrotate_subject"><input tabindex="1" id="adrotate_subject" name="adrotate_subject" type="text" size="50" class="ajdg-inputfield" value="" autocomplete="off" /></label>
 </td>
 			</tr>
 		    <tr>

@@ -23,121 +23,164 @@ function adrotate_generate_input() {
 		if(isset($_POST['adrotate_id'])) $id = $_POST['adrotate_id'];
 
 		// Basic advert
-		$advert_text = $targeturl = $title_attr = $alt_attr = $new_window = $nofollow = $basic_field = $basic_dropdown = $adwidth = $adheight = '';
-		if(isset($_POST['adrotate_text'])) $advert_text = strip_tags(trim($_POST['adrotate_text'], "\t\n "));
+		$fullsize_image = $targeturl = '';
+		if(isset($_POST['adrotate_fullsize_dropdown'])) $fullsize_image = strip_tags(trim($_POST['adrotate_fullsize_dropdown'], "\t\n "));
 		if(isset($_POST['adrotate_targeturl'])) $targeturl = strip_tags(trim($_POST['adrotate_targeturl'], "\t\n "));
-		if(isset($_POST['adrotate_title_attr'])) $title_attr = strip_tags(trim($_POST['adrotate_title_attr'], "\t\n "));	
+
+		$small_image = $medium_image = $large_image = '';		
+		if(isset($_POST['adrotate_small_dropdown'])) $small_image = strip_tags(trim($_POST['adrotate_small_dropdown'], "\t\n "));
+		if(isset($_POST['adrotate_medium_dropdown'])) $medium_image = strip_tags(trim($_POST['adrotate_medium_dropdown'], "\t\n "));
+		if(isset($_POST['adrotate_large_dropdown'])) $large_image = strip_tags(trim($_POST['adrotate_large_dropdown'], "\t\n "));
+
+		$new_window = $nofollow = $title_attr = $alt_attr = '';
 		if(isset($_POST['adrotate_newwindow'])) $new_window = strip_tags(trim($_POST['adrotate_newwindow'], "\t\n "));	
 		if(isset($_POST['adrotate_nofollow'])) $nofollow = strip_tags(trim($_POST['adrotate_nofollow'], "\t\n "));	
-		if(isset($_POST['adrotate_image'])) $basic_field = strip_tags(trim($_POST['adrotate_image'], "\t\n "));
-		if(isset($_POST['adrotate_basic_dropdown'])) $basic_dropdown = strip_tags(trim($_POST['adrotate_basic_dropdown'], "\t\n "));
-		if(isset($_POST['adrotate_width'])) $adwidth = strip_tags(trim($_POST['adrotate_width'], "\t\n "));
-		if(isset($_POST['adrotate_height'])) $adheight = strip_tags(trim($_POST['adrotate_height'], "\t\n "));
-
-		// HTML5/Flash advert
-		$html5_dropdown = $$html5_adwidth = $html5_adheight = $html5_clicktag = $html5_targeturl = '';
-		if(isset($_POST['adrotate_html5_dropdown'])) $html5_dropdown = strip_tags(trim($_POST['adrotate_html5_dropdown'], "\t\n "));
-		if(isset($_POST['adrotate_html5_width'])) $html5_adwidth = strip_tags(trim($_POST['adrotate_html5_width'], "\t\n "));
-		if(isset($_POST['adrotate_html5_height'])) $html5_adheight = strip_tags(trim($_POST['adrotate_html5_height'], "\t\n "));
-		if(isset($_POST['adrotate_html5_clicktag'])) $html5_clicktag = strip_tags(trim($_POST['adrotate_html5_clicktag'], "\t\n "));
-		if(isset($_POST['adrotate_html5_targeturl'])) $html5_targeturl = strip_tags(trim(strtolower($_POST['adrotate_html5_targeturl']), "\t\n "));
+		if(isset($_POST['adrotate_title_attr'])) $title_attr = strip_tags(trim($_POST['adrotate_title_attr'], "\t\n "));	
 
 		if(current_user_can('adrotate_ad_manage')) {	
-			// Basic Advert
-			if(strlen($targeturl) > 0) {
-				// Add alt and title attributes?
-				if(isset($title_attr) AND strlen($title_attr) != 0) {
-					$fileinfo = pathinfo(WP_CONTENT_URL."/".$adrotate_config['banner_folder']."/".$basic_dropdown);
+			// Fullsize Image & figure out adwidth and adheight
+			$fullsize_path = WP_CONTENT_URL."/".$adrotate_config['banner_folder']."/".$fullsize_image;
+			$fullsize_size = @getimagesize($fullsize_path);
+			if($fullsize_size){
+				$adwidth = ' width="'.$fullsize_size[0].'"';
+				$adheight = ' height="'.$fullsize_size[1].'"';
+			} else {
+				$adwidth = $adheight = '';
+			}
 
-					$title_attr = ' title="'.$fileinfo['filename'].'"';
-					$alt_attr = ' alt="'.$fileinfo['filename'].'"';
-				} else {
-					$title_attr = $alt_attr = '';
-				}
+			// Open in a new window?
+			if(isset($new_window) AND strlen($new_window) != 0) {
+				$new_window = ' target="_blank"';
+			} else {
+				$new_window = '';
+			}
 
-				// Sort out adwidth and adheight
-				if((is_numeric($adwidth) AND $adwidth < 1 OR $adwidth > 9999) OR $adwidth == '' OR !is_numeric($adwidth)) {
-					$adwidth = '';
-				} else {
-					$adwidth = ' width="'.$adwidth.'"';
-				}
-				if((is_numeric($adheight) AND $adheight < 1 OR $adheight > 9999) OR $adheight == '' OR !is_numeric($adheight)) {
-					$adheight = '';
-				} else {
-					$adheight = ' height="'.$adheight.'"';
-				}
+			// Set nofollow?
+			if(isset($nofollow) AND strlen($nofollow) != 0) {
+				$nofollow = ' rel="nofollow"';
+			} else {
+				$nofollow = '';
+			}
 
-				// Determine image settings ($basic_dropdown has priority!)
-				if(strlen($basic_dropdown) > 1) {
-					$imagetype = "dropdown";
-					$image = WP_CONTENT_URL."/%folder%/".$basic_dropdown;
-					$asset = "<img src=\"%asset%\"".$adwidth.$adheight.$alt_attr." />";
-				} else {
-					$imagetype = $image = "";
-					$asset = $advert_text; // Text advert
-				}
+			// Add alt and title attributes?
+			if(isset($title_attr) AND strlen($title_attr) != 0) {
+				$fileinfo = pathinfo($fullsize_path);
 
-				// Open in a new window?
-				if(isset($new_window) AND strlen($new_window) != 0) {
-					$new_window = ' target="_blank"';
-				} else {
-					$new_window = '';
-				}
+				$title_attr = ' title="'.$fileinfo['filename'].'"';
+				$alt_attr = ' alt="'.$fileinfo['filename'].'"';
+			} else {
+				$title_attr = $alt_attr = '';
+			}
 
-				// Set nofollow?
-				if(isset($nofollow) AND strlen($nofollow) != 0) {
-					$nofollow = ' rel="nofollow"';
-				} else {
-					$nofollow = '';
-				}
-
-				// Generate code
-				$bannercode = "<a href=\"".$targeturl."\"".$new_window.$nofollow.$title_attr.">".$asset."</a>";
-			} 
-			
-			// HTML5/FLASH advert
-			if(strlen($html5_dropdown) > 0) {
-				$imagetype = "dropdown";
-				$image = WP_CONTENT_URL."/%folder%/".$html5_dropdown;
-
-				// Sort out adwidth and adheight
-				if((is_numeric($html5_adwidth) AND $html5_adwidth < 1 OR $html5_adwidth > 9999) OR $html5_adwidth == '' OR !is_numeric($html5_adwidth)) {
-					$adwidth = '728';
-				} else {
-					$adwidth = $html5_adwidth;
-				}
-				if((is_numeric($html5_adheight) AND $html5_adheight < 1 OR $html5_adheight > 9999) OR $html5_adheight == '' OR !is_numeric($html5_adheight)) {
-					$adheight = '90';
-				} else {
-					$adheight = $html5_adheight;
-				}
-
-				// Set clickTAG?
-				if(isset($html5_clicktag) AND strlen($html5_targeturl) > 10) {
-					$clicktag = '?'.$html5_clicktag.'='.$html5_targeturl;
-				} else {
-					$clicktag = '';
-				}
-				
-				// Determine advert type
-				$extension = explode(".", $html5_dropdown);
-				$extension = end($extension);
-				
-				// Generate HTML5 code
-				if($extension == "html" OR $extension == "htm") {
-					$bannercode = "<iframe src=\"%asset%\" width=\"".$html5_adwidth."\" height=\"".$html5_adheight."\" frameborder=\"0\" style=\"border:none;\"></iframe>";
-				}
-
-				// Generate Flash advert
-				if($extension == "flv" OR $extension == "swf") {
-					$bannercode = "<object classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab\" width=\"".$adwidth."\" height=\"".$adheight."\" id=\"ajdg-flash-".$id."\"><param name=\"movie\" value=\"%asset%\"><param name=\"quality\" value=\"high\"><embed src=\"%asset%".$clicktag."\" quality=\"high\" width=\"".$adwidth."\" height=\"".$adheight."\" name=\"ajdg-flash-".$id."\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.macromedia.com/go/getflashplayer\"></embed></object>";
+			// Viewports
+			$srcset = $sizes = array();
+			if(strlen($small_image) > 0) {
+				$small_path = WP_CONTENT_URL."/".$adrotate_config['banner_folder']."/".$small_image;
+				$small_width = @getimagesize($small_path);
+				if($small_width){
+					$srcset[] = $small_path.' '.$small_width[0].'w';
+					$sizes[] = '(max-width: 480px) '.$small_width[0].'px';
+					unset($small_path, $small_image, $small_width);
 				}
 			}
+			if(strlen($medium_image) > 0) {
+				$medium_path = WP_CONTENT_URL."/".$adrotate_config['banner_folder']."/".$medium_image;
+				$medium_width = @getimagesize($medium_path);
+				if($medium_width){
+					$srcset[] = $medium_path.' '.$medium_width[0].'w';
+					$sizes[] = '(max-width: 960px) '.$medium_width[0].'px';
+					unset($medium_path, $medium_image, $medium_width);
+				}
+			}
+			if(strlen($large_image) > 0) {
+				$large_path = WP_CONTENT_URL."/".$adrotate_config['banner_folder']."/".$large_image;
+				$large_width = @getimagesize($large_path);
+				if($large_width){
+					$srcset[] = $large_path.' '.$large_width[0].'w';
+					$sizes[] = '(max-width: 1280px) '.$large_width[0].'px';
+					unset($large_path, $large_image, $large_width);
+				}
+			}
+
+			$srcset[] = $fullsize_path.' '.$fullsize_size[0].'w';
+			$sizes[] = '1281px';
+
+			$scrset_html = (count($srcset) > 0) ? ' srcset="'.implode(", ", $srcset).'"' : '';
+			$sizes_html = (count($sizes) > 0) ? ' sizes="'.implode(", ", $sizes).'"' : '';
+
+			// Determine image settings
+			$imagetype = "dropdown";
+			$image = WP_CONTENT_URL."/%folder%/".$fullsize_image;
+			$asset = "<img src=\"%asset%\"".$adwidth.$adheight.$alt_attr.$scrset_html.$sizes_html." />";
+
+			// Generate code
+			$bannercode = "<a href=\"".$targeturl."\"".$new_window.$nofollow.$title_attr.">".$asset."</a>";
 
 			// Save the ad to the DB
 			$wpdb->update($wpdb->prefix.'adrotate', array('bannercode' => $bannercode, 'imagetype' => $imagetype, 'image' => $image), array('id' => $id));
 
 			adrotate_return('adrotate-ads', 226, array('view' => 'edit', 'ad'=> $id));
+			exit;
+		} else {
+			adrotate_return('adrotate-ads', 500);
+		}
+	} else {
+		adrotate_nonce_error();
+		exit;
+	}
+}
+
+/*-------------------------------------------------------------
+ Name:      adrotate_save_header
+ Purpose:   Generate header code based on user input
+ Since:		5.0
+-------------------------------------------------------------*/
+function adrotate_save_header() {
+	global $wpdb, $adrotate_config;
+
+	if(wp_verify_nonce($_POST['adrotate_nonce_header'], 'adrotate_nonce')) {
+		// Mandatory
+		$headercode = $adstxt = '';
+		if(isset($_POST['adrotate_header'])) $headercode = htmlspecialchars(trim($_POST['adrotate_header'], "\t\n "), ENT_QUOTES);
+		if(isset($_POST['adrotate_adstxt'])) $adstxt = htmlspecialchars(trim($_POST['adrotate_adstxt'], "\t "), ENT_QUOTES);
+
+		if(current_user_can('adrotate_ad_manage')) {	
+			// ads.txt
+
+			// Format new lines
+			$adstxt = str_ireplace("\n\n", "\n", $adstxt);
+			$adstxt = explode("\n", $adstxt);
+
+			if(is_array($adstxt)) {
+				foreach($adstxt as $ad) {
+					$adpieces = explode(",", $ad);
+					foreach($adpieces as $key => $piece) {
+						$piece = trim($piece, "\t\n, ");
+						$piece = preg_replace("/\s+/", " ", $piece);
+						$adpieces[$key] = $piece;
+					}
+					$ad = implode(", ", $adpieces);
+					$lines[] = "$ad\n";
+					unset($ad, $adpieces);
+				}
+
+				// Write new rules
+				$fp = fopen(ABSPATH.'ads.txt', 'w');
+				foreach($lines as $line){
+					fwrite($fp, "$line");
+				}
+				fclose($fp);
+				unset($fp);
+			}
+			
+			// Header snippet
+			// Clean things up
+			if(preg_match("/%RANDOM%/", $headercode)) $headercode = str_replace('%RANDOM%', '%random%', $headercode);
+
+			// Save the code
+			update_option('adrotate_header_output', $headercode);
+
+			adrotate_return('adrotate-ads', 227, array('view' => 'advanced'));
 			exit;
 		} else {
 			adrotate_return('adrotate-ads', 500);
@@ -213,12 +256,11 @@ function adrotate_insert_input() {
 		if(isset($_POST['adrotate_geo_southeastasia'])) $countries_southeastasia = array('AU', 'BN', 'KH', 'TL', 'ID', 'LA', 'MY', 'MM', 'NZ', 'PH', 'SG', 'TH', 'VN');
 	
 		// advertiser
-		$advertiser = $budget = $crate = $irate = $paid = 0;
+		$advertiser = $budget = $crate = $irate = 0;
 		if(isset($_POST['adrotate_advertiser'])) $advertiser = $_POST['adrotate_advertiser'];
 		if(isset($_POST['adrotate_budget'])) $budget = strip_tags(trim($_POST['adrotate_budget'], "\t\n "));
 		if(isset($_POST['adrotate_crate'])) $crate = strip_tags(trim($_POST['adrotate_crate'], "\t\n "));
 		if(isset($_POST['adrotate_irate'])) $irate = strip_tags(trim($_POST['adrotate_irate'], "\t\n "));
-		if(isset($_POST['adrotate_paid'])) $paid = strip_tags(trim($_POST['adrotate_paid'], "\t\n "));
 
 		if(current_user_can('adrotate_ad_manage')) {
 			if(strlen($title) < 1) {
@@ -272,7 +314,7 @@ function adrotate_insert_input() {
 			if(strlen($maxshown) < 1 OR !is_numeric($maxshown))	$maxshown = 0;
 	
 			// Impression Spread
-			if(isset($spread) AND strlen($spread) != 0 AND $maxshown > 0) {
+			if(isset($spread) AND strlen($spread) != 0 AND $maxshown >= 100) {
 				$spread = 'Y';
 			} else {
 				$spread = 'N';
@@ -283,9 +325,6 @@ function adrotate_insert_input() {
 				$wpdb->insert($wpdb->prefix.'adrotate_schedule', array('name' => 'Schedule for ad '.$id, 'starttime' => $start_date, 'stoptime' => $end_date, 'maxclicks' => $maxclicks, 'maximpressions' => $maxshown, 'spread' => $spread));
 				$schedules[] = $wpdb->insert_id;
 			}
-
-			// Override paid status?
-			if($advertiser == 0) $paid = 'U';
 
 			if(isset($tracker) AND strlen($tracker) != 0) $tracker = 'Y';
 				else $tracker = 'N';
@@ -354,7 +393,7 @@ function adrotate_insert_input() {
 			}
 
 			// Save the ad to the DB
-			$wpdb->update($wpdb->prefix.'adrotate', array('title' => $title, 'bannercode' => $bannercode, 'updated' => $thetime, 'author' => $author, 'imagetype' => $imagetype, 'image' => $image, 'paid' => $paid, 'tracker' => $tracker, 'show_everyone' => $show_everyone, 'desktop' => $desktop, 'mobile' => $mobile, 'tablet' => $tablet, 'os_ios' => $os_ios, 'os_android' => $os_android, 'os_other' => $os_other, 'responsive' => 'N', 'type' => $active, 'weight' => $weight, 'autodelete' => $autodelete, 'budget' => $budget, 'crate' => $crate, 'irate' => $irate, 'cities' => $cities, 'countries' => $countries), array('id' => $id));
+			$wpdb->update($wpdb->prefix.'adrotate', array('title' => $title, 'bannercode' => $bannercode, 'updated' => $thetime, 'author' => $author, 'imagetype' => $imagetype, 'image' => $image, 'tracker' => $tracker, 'show_everyone' => $show_everyone, 'desktop' => $desktop, 'mobile' => $mobile, 'tablet' => $tablet, 'os_ios' => $os_ios, 'os_android' => $os_android, 'os_other' => $os_other, 'type' => $active, 'weight' => $weight, 'autodelete' => $autodelete, 'budget' => $budget, 'crate' => $crate, 'irate' => $irate, 'cities' => $cities, 'countries' => $countries), array('id' => $id));
 
 			// Fetch group records for the ad
 			$groupmeta = $wpdb->get_results($wpdb->prepare("SELECT `group` FROM `{$wpdb->prefix}adrotate_linkmeta` WHERE `ad` = %d AND `user` = 0 AND `schedule` = 0;", $id));
@@ -561,6 +600,65 @@ function adrotate_insert_group() {
 			$dynamic_count = $wpdb->get_var("SELECT COUNT(*) as `total` FROM `{$wpdb->prefix}adrotate_groups` WHERE `name` != '' AND `modus` = 1;");
 			update_option('adrotate_dynamic_required', $dynamic_count);
 	
+			// Generate CSS for group
+			if($align == 0) { // None
+				$group_align = '';
+			} else if($align == 1) { // Left
+				$group_align = ' float:left; clear:left;';
+			} else if($align == 2) { // Right
+				$group_align = ' float:right; clear:right;';
+			} else if($align == 3) { // Center
+				$group_align = ' margin: 0 auto;';
+			}
+
+			$output_css = "";
+			if($modus == 0 AND ($admargin_top > 0 OR $admargin_right > 0 OR $admargin_bottom > 0 OR $admargin_left > 0 OR $align > 0)) { // Single ad group
+				if($align < 3) {
+					$output_css .= "\t.g".$adrotate_config['adblock_disguise']."-".$id." { margin:".$admargin_top."px ".$admargin_right."px ".$admargin_bottom."px ".$admargin_left."px;".$group_align." }\n";
+				} else {
+					$output_css .= "\t.g".$adrotate_config['adblock_disguise']."-".$id." { ".$group_align." }\n";	
+				}
+			}
+	
+			if($modus == 1) { // Dynamic group
+				if($adwidth != 'auto') {
+					$width = "width:100%; max-width:".$adwidth."px;";
+				} else {
+					$width = "width:auto;";
+				}
+				
+				if($adheight != 'auto') {
+					$height = "height:100%; max-height:".$adheight."px;";
+				} else {
+					$height = "height:auto;";
+				}
+
+				if($align < 3) {
+					$output_css .= "\t.g".$adrotate_config['adblock_disguise']."-".$id." { margin:".$admargin_top."px ".$admargin_right."px ".$admargin_bottom."px ".$admargin_left."px;".$width." ".$height.$group_align." }\n";
+				} else {
+					$output_css .= "\t.g".$adrotate_config['adblock_disguise']."-".$id." { ".$width." ".$height.$group_align." }\n";	
+				}
+
+				unset($width_sum, $width, $height_sum, $height);
+			}
+	
+			if($modus == 2) { // Block group
+				if($adwidth != 'auto') {
+					$width_sum = $columns * ($admargin_left + $adwidth + $admargin_right);
+					$grid_width = "min-width:".$admargin_left."px; max-width:".$width_sum."px;";
+				} else {
+					$grid_width = "width:auto;";
+				}
+				
+				$output_css .= "\t.g".$adrotate_config['adblock_disguise']."-".$id." { ".$grid_width.$group_align." }\n";
+				$output_css .= "\t.b".$adrotate_config['adblock_disguise']."-".$id." { margin:".$admargin_top."px ".$admargin_right."px ".$admargin_bottom."px ".$admargin_left."px; }\n";
+				unset($width_sum, $grid_width, $height_sum, $grid_height);
+			}
+			
+			$group_css = get_option('adrotate_group_css');
+			$group_css[$id] = $output_css;
+			update_option('adrotate_group_css', $group_css);
+			// End CSS
 
 			adrotate_return('adrotate-groups', 201);
 			exit;
@@ -596,10 +694,11 @@ function adrotate_insert_schedule() {
 		if(isset($_POST['adrotate_end_hour'])) $end_hour = strip_tags(trim($_POST['adrotate_end_hour'], "\t\n "));
 		if(isset($_POST['adrotate_end_minute'])) $end_minute = strip_tags(trim($_POST['adrotate_end_minute'], "\t\n "));
 	
-		$maxclicks = $maxshown = $spread = '';
+		$maxclicks = $maxshown = $spread = $autodelete = '';
 		if(isset($_POST['adrotate_maxclicks'])) $maxclicks = strip_tags(trim($_POST['adrotate_maxclicks'], "\t\n "));
 		if(isset($_POST['adrotate_maxshown'])) $maxshown = strip_tags(trim($_POST['adrotate_maxshown'], "\t\n "));	
 		if(isset($_POST['adrotate_spread'])) $spread = strip_tags(trim($_POST['adrotate_spread'], "\t\n "));	
+		if(isset($_POST['adrotate_autodelete'])) $autodelete = strip_tags($_POST['adrotate_autodelete']);
 
 		$start_day_hour = $start_day_minute = $end_day_hour = $end_day_minute = $day_mon = $day_tue = $day_wed = $day_thu = $day_fri = $day_sat = $day_sun = '';
 		if(isset($_POST['adrotate_start_day_hour'])) $start_day_hour = strip_tags(trim($_POST['adrotate_start_day_hour'], "\t\n "));	
@@ -613,8 +712,6 @@ function adrotate_insert_schedule() {
 		if(isset($_POST['adrotate_fri'])) $day_fri = strip_tags(trim($_POST['adrotate_fri'], "\t\n "));	
 		if(isset($_POST['adrotate_sat'])) $day_sat = strip_tags(trim($_POST['adrotate_sat'], "\t\n "));	
 		if(isset($_POST['adrotate_sun'])) $day_sun = strip_tags(trim($_POST['adrotate_sun'], "\t\n "));	
-
-		if(isset($_POST['adrotate_autodelete'])) $autodelete = strip_tags($_POST['adrotate_autodelete']);
 
 		$ads = '';
 		if(isset($_POST['adselect'])) $ads = $_POST['adselect'];
@@ -664,8 +761,18 @@ function adrotate_insert_schedule() {
 			if(strlen($maxshown) < 1 OR !is_numeric($maxshown))	$maxshown = 0;
 			
 			// Impression Spread
-			if(isset($spread) AND strlen($spread) != 0) $spread = 'Y';
-				else $spread = 'N';
+			if(isset($spread) AND strlen($spread) != 0 AND $maxshown >= 100) {
+				$spread = 'Y';
+			} else {
+				$spread = 'N';
+			}
+
+			// Auto delete
+			if(isset($autodelete) AND strlen($autodelete) != 0) {
+				$autodelete = 'Y';
+			} else {
+				$autodelete = 'N';
+			}
 
 			// Day schedules
 			if(!isset($start_day_hour) AND $start_day_hour < 1) $start_day_hour = '00';
@@ -690,10 +797,6 @@ function adrotate_insert_schedule() {
 				else $day_sat = 'N';
 			if(isset($day_sun) AND strlen($day_sun) != 0) $day_sun = 'Y';
 				else $day_sun = 'N';
-
-			// Auto delete
-			if(isset($autodelete) AND strlen($autodelete) != 0) $autodelete = 'Y';
-				else $autodelete = 'N';
 
 			// Fetch records for the schedule
 			$linkmeta = $wpdb->get_results($wpdb->prepare("SELECT `ad` FROM `{$wpdb->prefix}adrotate_linkmeta` WHERE `schedule` = %d AND `user` = 0;", $id));
@@ -728,58 +831,6 @@ function adrotate_insert_schedule() {
 			exit;
 		} else {
 			adrotate_return('adrotate-schedules', 500);
-		}
-	} else {
-		adrotate_nonce_error();
-		exit;
-	}
-}
-
-/*-------------------------------------------------------------
- Name:      adrotate_insert_transaction
- Purpose:   Prepare input form on saving new or updated transactions
- Since:		3.8.9 
--------------------------------------------------------------*/
-function adrotate_insert_transaction() {
-	global $wpdb;
-
-	if(wp_verify_nonce($_POST['adrotate_nonce'], 'adrotate_save_transaction')) {
-		// Mandatory
-		$id = $advert_id = $reference = $note = $amount = '';
-		if(isset($_POST['adrotate_transaction'])) $id = esc_attr($_POST['adrotate_transaction']);
-		if(isset($_POST['adrotate_paid'])) $paid = esc_attr($_POST['adrotate_paid']);
-		if(isset($_POST['adrotate_advert'])) $advert_id = esc_attr($_POST['adrotate_advert']);
-		if(isset($_POST['adrotate_reference'])) $reference = strip_tags(trim($_POST['adrotate_reference'], "\t\n "));
-		if(isset($_POST['adrotate_note'])) $note = strip_tags(trim($_POST['adrotate_note'], "\t\n "));
-		if(isset($_POST['adrotate_amount'])) $amount = strip_tags(trim($_POST['adrotate_amount'], "\t\n "));
-		if(isset($_POST['adrotate_budget'])) $budget = strip_tags(trim($_POST['adrotate_budget'], "\t\n "));
-		$billed = adrotate_now();
-
-		if(current_user_can('adrotate_advertiser_manage')) {
-			if($advert_id > 0) {	
-				// Set a reference
-				if(strlen($reference) < 1) $reference = 'tr_'.uniqid();
-	
-				// Format the amount
-				if((strlen($amount) == 0 OR $amount == "" OR !is_numeric($amount) OR $amount < 0 OR $amount > 99999)) $amount = 0;
-				$amount == number_format($amount, 4, '.', '');
-
-				if(isset($budget) AND strlen($budget) != 0) $budget = 'Y';
-					else $budget = 'N';
-	
-				$user_id = $wpdb->get_var("SELECT `user` FROM `{$wpdb->prefix}adrotate_linkmeta` WHERE `ad` = {$advert_id} AND `group` = 0 AND `schedule` = 0;");
-	
-				// Save the schedule to the DB
-				$wpdb->update($wpdb->prefix.'adrotate_transactions', array('ad' => $advert_id, 'user' => $user_id, 'reference' => $reference, 'note' => $note, 'billed' => $billed, 'paid' => $paid, 'amount' => $amount, 'budget' => $budget), array('id' => $id));
-				$wpdb->update($wpdb->prefix.'adrotate', array('paid' => 'N'), array('id' => $advert_id));
-	
-				adrotate_return('adrotate-transactions', 224);
-			} else {
-				adrotate_return('adrotate-transactions', 225);
-			}
-			exit;
-		} else {
-			adrotate_return('adrotate-transactions', 500);
 		}
 	} else {
 		adrotate_nonce_error();
@@ -928,16 +979,14 @@ function adrotate_request_action() {
 	OR wp_verify_nonce($_POST['adrotate_nonce'],'adrotate_bulk_ads_queue') 
 	OR wp_verify_nonce($_POST['adrotate_nonce'],'adrotate_bulk_ads_reject') 
 	OR wp_verify_nonce($_POST['adrotate_nonce'],'adrotate_bulk_ads_archive') 
-	OR wp_verify_nonce($_POST['adrotate_nonce'],'adrotate_bulk_ads_bin') 
+	OR wp_verify_nonce($_POST['adrotate_nonce'],'adrotate_bulk_ads_trash') 
 	OR wp_verify_nonce($_POST['adrotate_nonce'],'adrotate_bulk_groups') 
-	OR wp_verify_nonce($_POST['adrotate_nonce'],'adrotate_bulk_schedules')
-	OR wp_verify_nonce($_POST['adrotate_nonce'],'adrotate_bulk_transactions')) {
+	OR wp_verify_nonce($_POST['adrotate_nonce'],'adrotate_bulk_schedules')) {
 		$banner_ids = $group_ids = $schedule_ids = '';
 		if(!empty($_POST['adrotate_id'])) $banner_ids = array($_POST['adrotate_id']);
 		if(!empty($_POST['bannercheck'])) $banner_ids = $_POST['bannercheck'];
 		if(!empty($_POST['groupcheck'])) $group_ids = $_POST['groupcheck'];
 		if(!empty($_POST['schedulecheck'])) $schedule_ids = $_POST['schedulecheck'];
-		if(!empty($_POST['transactioncheck'])) $transaction_ids = $_POST['transactioncheck'];
 		
 		// Determine which kind of action to use
 		if(!empty($_POST['adrotate_action'])) {
@@ -993,9 +1042,9 @@ function adrotate_request_action() {
 						adrotate_return($return, 500);
 					}
 				}
-				if($action == 'bin') {
+				if($action == 'trash') {
 					if(current_user_can('adrotate_ad_delete')) {
-						adrotate_delete($banner_id, 'bin');
+						adrotate_delete($banner_id, 'trash');
 						$result_id = 221;
 					} else {
 						adrotate_return($return, 500);
@@ -1109,28 +1158,6 @@ function adrotate_request_action() {
 			}
 		}
 		
-		if($transaction_ids != '') {
-			$return = 'adrotate-transactions';
-			foreach($transaction_ids as $transaction_id) {
-				if($action == 'transaction_paid') {
-					if(current_user_can('adrotate_advertiser_manage')) {
-						adrotate_paid($transaction_id);
-						$result_id = 218;
-					} else {
-						adrotate_return($return, 500);
-					}
-				}
-				if($action == 'transaction_delete') {
-					if(current_user_can('adrotate_advertiser_manage')) {
-						adrotate_delete($transaction_id, 'transaction');
-						$result_id = 218;
-					} else {
-						adrotate_return($return, 500);
-					}
-				}
-			}
-		}
-		
 		adrotate_return($return, $result_id);
 	} else {
 		adrotate_nonce_error();
@@ -1151,7 +1178,7 @@ function adrotate_duplicate($id) {
 
 		$duplicate_id = $wpdb->get_row("SELECT * FROM `{$wpdb->prefix}adrotate` WHERE `id` = {$id};");
 
-		$wpdb->insert($wpdb->prefix.'adrotate', array('title' => $duplicate_id->title.' (Copy of #'.$id.')', 'bannercode' => $duplicate_id->bannercode, 'thetime' => $thetime, 'updated' => $thetime, 'author' => $duplicate_id->author, 'imagetype' => $duplicate_id->imagetype, 'image' => $duplicate_id->image, 'paid' => 'U', 'tracker' => $duplicate_id->tracker, 'desktop' => $duplicate_id->desktop, 'mobile' => $duplicate_id->mobile, 'tablet' => $duplicate_id->tablet, 'os_ios' => $duplicate_id->os_ios, 'os_android' => $duplicate_id->os_android, 'os_other' => $duplicate_id->os_other, 'responsive' => 'N', 'type' => $duplicate_id->type, 'weight' => $duplicate_id->weight, 'budget' => $duplicate_id->budget, 'crate' => $duplicate_id->crate, 'irate' => $duplicate_id->irate, 'cities' => $duplicate_id->cities, 'countries' => $duplicate_id->countries));
+		$wpdb->insert($wpdb->prefix.'adrotate', array('title' => $duplicate_id->title.' (Copy of #'.$id.')', 'bannercode' => $duplicate_id->bannercode, 'thetime' => $thetime, 'updated' => $thetime, 'author' => $duplicate_id->author, 'imagetype' => $duplicate_id->imagetype, 'image' => $duplicate_id->image, 'tracker' => $duplicate_id->tracker, 'desktop' => $duplicate_id->desktop, 'mobile' => $duplicate_id->mobile, 'tablet' => $duplicate_id->tablet, 'os_ios' => $duplicate_id->os_ios, 'os_android' => $duplicate_id->os_android, 'os_other' => $duplicate_id->os_other, 'type' => $duplicate_id->type, 'weight' => $duplicate_id->weight, 'budget' => $duplicate_id->budget, 'crate' => $duplicate_id->crate, 'irate' => $duplicate_id->irate, 'cities' => $duplicate_id->cities, 'countries' => $duplicate_id->countries));
 
 		$new_id = $wpdb->insert_id;
 
@@ -1183,26 +1210,28 @@ function adrotate_delete($id, $what) {
 			$wpdb->query($wpdb->prepare("DELETE FROM `{$wpdb->prefix}adrotate_linkmeta` WHERE `ad` = %d;", $id));
 			$wpdb->query($wpdb->prepare("DELETE FROM `{$wpdb->prefix}adrotate_stats` WHERE `ad` = %d;", $id));
 			$wpdb->query($wpdb->prepare("DELETE FROM `{$wpdb->prefix}adrotate_stats_archive` WHERE `ad` = %d;", $id));
-		} else if($what == 'bin') {
-			$wpdb->update("{$wpdb->prefix}adrotate", array('type' => 'bin', 'updated' => $now), array('id' => $id));
+		} else if($what == 'trash') {
+			$wpdb->update("{$wpdb->prefix}adrotate", array('type' => 'trash', 'updated' => $now), array('id' => $id));
 		} else if($what == 'group') {
 			$wpdb->query($wpdb->prepare("DELETE FROM `{$wpdb->prefix}adrotate_groups` WHERE `id` = %d;", $id));
 			$wpdb->query($wpdb->prepare("DELETE FROM `{$wpdb->prefix}adrotate_linkmeta` WHERE `group` = %d;", $id));
 			$wpdb->query($wpdb->prepare("DELETE FROM `{$wpdb->prefix}adrotate_stats` WHERE `group` = %d;", $id));
 			$wpdb->query($wpdb->prepare("DELETE FROM `{$wpdb->prefix}adrotate_stats_archive` WHERE `group` = %d;", $id));
+			
+			// Remove CSS from group
+			$group_css = get_option('adrotate_group_css');
+			unset($group_css[$id]);
+			update_option('adrotate_group_css', $group_css);
 		} else if($what == 'bannergroup') {
 			$linkmeta = $wpdb->get_results($wpdb->prepare("SELECT `ad` FROM `{$wpdb->prefix}adrotate_linkmeta` WHERE `group` = %d AND `user` = '0' AND `schedule` = '0';", $id));
 			foreach($linkmeta as $meta) {
-				adrotate_delete($meta->ad, 'bin');
+				adrotate_delete($meta->ad, 'trash');
 			}
 			unset($linkmeta);
 			adrotate_delete($id, 'group');
 		} else if($what == 'schedule') {
 			$wpdb->query($wpdb->prepare("DELETE FROM `{$wpdb->prefix}adrotate_schedule` WHERE `id` = %d;", $id));
 			$wpdb->query($wpdb->prepare("DELETE FROM `{$wpdb->prefix}adrotate_linkmeta` WHERE `schedule` = %d;", $id));
-		} else if($what == 'transaction') {
-			$wpdb->update("{$wpdb->prefix}adrotate", array('paid' => 'U'));
-			$wpdb->query($wpdb->prepare("DELETE FROM `{$wpdb->prefix}adrotate_transactions` WHERE `id` = %d;", $id));
 		}
 	}
 }
@@ -1332,26 +1361,6 @@ function adrotate_queue($id) {
 }
 
 /*-------------------------------------------------------------
- Name:      adrotate_paid
- Purpose:   Queue a rejected banner
- Since:		4.1
--------------------------------------------------------------*/
-function adrotate_paid($id) {
-	global $wpdb;
-
-	if($id > 0) {
-		$now = adrotate_now();
-		$budget = $wpdb->get_row($wpdb->prepare("SELECT `ad`, `budget`, `amount` FROM `{$wpdb->prefix}adrotate_transactions` WHERE `id` = %d;", $id)); 
-		if($budget->budget == "Y") {
-			$wpdb->query("UPDATE `{$wpdb->prefix}adrotate` SET `paid` = 'B', `budget` = `budget` + {$budget->amount} WHERE `id` = {$budget->ad};");
-		} else {
-			$wpdb->update($wpdb->prefix.'adrotate', array('paid' => 'S'), array('id' => $budget->ad));
-		}
-		$wpdb->update($wpdb->prefix.'adrotate_transactions', array('paid' => $now), array('id' => $id));
-	}
-}
-
-/*-------------------------------------------------------------
  Name:      adrotate_export
  Purpose:   Export selected banners
  Since:		3.8.5
@@ -1456,7 +1465,7 @@ function adrotate_save_options() {
 			$config = get_option('adrotate_config');
 
 			$stats = trim($_POST['adrotate_stats']);
-			$config['stats'] = (is_numeric($stats) AND $stats >= 0 AND $stats <= 4) ? $stats : 1;
+			$config['stats'] = (is_numeric($stats) AND $stats >= 0 AND $stats <= 5) ? $stats : 1;
 			$config['enable_loggedin_impressions'] = (isset($_POST['adrotate_enable_loggedin_impressions'])) ? 'Y' : 'N';
 			$config['enable_loggedin_clicks'] = (isset($_POST['adrotate_enable_loggedin_clicks'])) ? 'Y' : 'N';
 			$config['enable_clean_trackerdata'] = (isset($_POST['adrotate_enable_clean_trackerdata'])) ? 'Y' : 'N';
@@ -1493,13 +1502,15 @@ function adrotate_save_options() {
 			$geo_pass = trim($_POST['adrotate_geo_pass']);
 			$config['geo_pass'] = (strlen($geo_pass) > 0) ? $geo_pass : '';
 
-			// Try to update the Geo Cookie for Admin
 			if($config['enable_geo'] > 0) {
+				// Purge
+				@setcookie('adrotate-geo', '', time() - 300, COOKIEPATH, COOKIE_DOMAIN);
+				// New cookie
 				adrotate_geolocation();
 			}
 			
-			// If no quota's are kept, reset possible old values to 0
-			if($config['enable_geo'] == 6 OR $config['enable_geo'] == 7) {
+			// If no quotas are kept or Geo Targeting is disabled, reset possible old values to 0
+			if($config['enable_geo'] == 0 OR $config['enable_geo'] == 6 OR $config['enable_geo'] == 7) {
 				update_option('adrotate_geo_requests', 0);
 				update_option('adrotate_geo_reset', 0);
 			}
@@ -1558,10 +1569,10 @@ function adrotate_save_options() {
 
 			$config['widgetalign'] = (isset($_POST['adrotate_widgetalign'])) ? 'Y' : 'N';
 			$config['widgetpadding'] = (isset($_POST['adrotate_widgetpadding'])) ? 'Y' : 'N';
-			$config['adminbar'] = (isset($_POST['adrotate_adminbar'])) ? 'Y' : 'N';
 			$config['hide_schedules'] = (isset($_POST['adrotate_hide_schedules'])) ? 'Y' : 'N';
 			$config['w3caching'] = (isset($_POST['adrotate_w3caching'])) ? 'Y' : 'N';
 			$config['borlabscache'] = (isset($_POST['adrotate_borlabscache'])) ? 'Y' : 'N';
+			$config['affiliates'] = (isset($_POST['adrotate_affiliates'])) ? 'Y' : 'N';
 	
 			update_option('adrotate_config', $config);
 		}
@@ -1622,9 +1633,9 @@ function adrotate_save_profile_fields($user_id){
 	    update_user_meta($user_id, 'adrotate_is_advertiser', $advertiser);
 	
 		// Set user permissions
-		$permissions['edit'] = (isset($_POST['adrotate_can_edit']) AND strlen($_POST['adrotate_can_edit']) != 0) ? 'Y' : 'N';
-		$permissions['mobile'] = (isset($_POST['adrotate_can_mobile']) AND strlen($_POST['adrotate_can_mobile']) != 0) ? 'Y' : 'N';
-		$permissions['geo'] = (isset($_POST['adrotate_can_geo']) AND strlen($_POST['adrotate_can_geo']) != 0) ? 'Y' : 'N';
+		$permissions['edit'] = (isset($_POST['adrotate_can_edit']) AND strlen($_POST['adrotate_can_edit']) != 0 AND $advertiser == "Y") ? 'Y' : 'N';
+		$permissions['mobile'] = (isset($_POST['adrotate_can_mobile']) AND strlen($_POST['adrotate_can_mobile']) != 0 AND $advertiser == "Y") ? 'Y' : 'N';
+		$permissions['geo'] = (isset($_POST['adrotate_can_geo']) AND strlen($_POST['adrotate_can_geo']) != 0 AND $advertiser == "Y") ? 'Y' : 'N';
 	    update_user_meta($user_id, 'adrotate_permissions', $permissions);
 	
 		// User notes

@@ -31,7 +31,7 @@ function adrotate_can_edit() {
 -------------------------------------------------------------*/
 function adrotate_is_networked() {
 	if(!function_exists('is_plugin_active_for_network')) require_once(ABSPATH.'/wp-admin/includes/plugin.php');
-	 
+
 	if(is_plugin_active_for_network('adrotate-pro/adrotate-pro.php')) {
 		return true;
 	}		
@@ -383,7 +383,7 @@ function adrotate_filter_content($content) {
  Since:		3.8.5
 -------------------------------------------------------------*/
 function adrotate_geolocation() {
-	global $wpdb, $ajdg_solutions_domain;
+	global $wpdb;
 
 	if((!adrotate_has_cookie('geo') AND adrotate_is_human())) {
 		$adrotate_config = get_option('adrotate_config');
@@ -443,7 +443,7 @@ function adrotate_geolocation() {
 					update_option('adrotate_geo_requests', $lookups);
 					update_option('adrotate_geo_reset', $daystart);
 				}
-				unset($daystart);					
+				unset($daystart);	
 			}
 
 			// Do a lookup if there are enough lookups available
@@ -457,7 +457,7 @@ function adrotate_geolocation() {
 				$args = array('timeout' => 3, 'sslverify' => false, 'headers' => array('User-Agent' => 'AdRotate Pro;' . get_option('siteurl')));
 				$auth = base64_encode($adrotate_activate["instance"].':'.$adrotate_activate["key"]);
 				$raw_response = wp_remote_get('https://ajdg.solutions/api/geo/5/?auth='.$auth.'&ip='.$remote_ip, $args);
-	
+
 				$geo_result['provider'] = 'AdRotate Geo';
 			    if(!is_wp_error($raw_response)) {	
 				    $response = json_decode($raw_response['body'], true);
@@ -518,8 +518,8 @@ function adrotate_geolocation() {
 					$geo_result['city'] = (isset($response['city'])) ? strtolower($response['city']) : '';
 					$geo_result['dma'] = (isset($response['geoname_id'])) ? strtolower($response['geoname_id']) : '';
 					$geo_result['countrycode'] = (isset($response['country_code'])) ? $response['country_code'] : '';
-					$geo_result['state'] = (isset($response['region_name'])) ? $response['region_name'] : '';
-					$geo_result['statecode'] = (isset($response['region_code'])) ? $response['region_code'] : '';
+					$geo_result['state'] = (isset($response['region_name'])) ? strtolower($response['region_name']) : '';
+					$geo_result['statecode'] = (isset($response['region_code'])) ? strtolower($response['region_code']) : '';
 				} else { 			
 					$geo_result['error'] = $raw_response['response']['message'];
 				}
@@ -529,7 +529,7 @@ function adrotate_geolocation() {
 			}
 		}
 	
-		setcookie('adrotate-geo', serialize($geo_result), time() + $adrotate_config['geo_cookie_life'], COOKIEPATH, COOKIE_DOMAIN);
+		@setcookie('adrotate-geo', serialize($geo_result), time() + $adrotate_config['geo_cookie_life'], COOKIEPATH, COOKIE_DOMAIN);
 		if(!isset($_SESSION['adrotate-geo'])) $_SESSION['adrotate-geo'] = $geo_result;
 	}	
 }
@@ -838,22 +838,6 @@ function adrotate_countries() {
 		'UA' => "Ukraine",
 		'GB' => "United Kingdom",
 
-		// South East Asia + Australia + New Zealand
-		'SOUTHEASTASIA' => "Southeast Asia, Australia and New Zealand",
-		'AU' => "Australia",
-		'BN' => "Brunei",
-		'KH' => "Cambodia",
-		'TL' => "East Timor (Timor Timur)",
-		'ID' => "Indonesia",
-		'LA' => "Laos",
-		'MY' => "Malaysia",
-		'MM' => "Myanmar",
-		'NZ' => "New Zealand",
-		'PH' => "Philippines",
-		'SG' => "Singapore",
-		'TH' => "Thailand",
-		'VN' => "Vietnam",
-
 		// North America
 		'NORTHAMERICA' => "North America",
 		'AG' => "Antigua and Barbuda",
@@ -894,6 +878,22 @@ function adrotate_countries() {
 		'SR' => "Suriname",
 		'UY' => "Uruguay",
 		'VE' => "Venezuela",
+
+		// South East Asia + Australia + New Zealand
+		'SOUTHEASTASIA' => "Southeast Asia, Australia and New Zealand",
+		'AU' => "Australia",
+		'BN' => "Brunei",
+		'KH' => "Cambodia",
+		'TL' => "East Timor (Timor Timur)",
+		'ID' => "Indonesia",
+		'LA' => "Laos",
+		'MY' => "Malaysia",
+		'MM' => "Myanmar",
+		'NZ' => "New Zealand",
+		'PH' => "Philippines",
+		'SG' => "Singapore",
+		'TH' => "Thailand",
+		'VN' => "Vietnam",
 
 		// Misc
 		'MISC' => "Rest of the world",
@@ -1049,7 +1049,7 @@ function adrotate_prepare_evaluate_ads($return = true) {
 	global $wpdb;
 	
 	// Fetch ads
-	$ads = $wpdb->get_results("SELECT `id` FROM `{$wpdb->prefix}adrotate` WHERE `type` != 'disabled' AND `type` != 'generator' AND `type` != 'a_empty' AND `type` != 'a_error' AND `type` != 'queue' AND `type` != 'reject' AND `type` != 'archived' AND `type` != 'bin' AND `type` != 'empty' ORDER BY `id` ASC;");
+	$ads = $wpdb->get_results("SELECT `id` FROM `{$wpdb->prefix}adrotate` WHERE `type` != 'disabled' AND `type` != 'generator' AND `type` != 'a_empty' AND `type` != 'a_error' AND `type` != 'queue' AND `type` != 'reject' AND `type` != 'archived' AND `type` != 'trash' AND `type` != 'empty' ORDER BY `id` ASC;");
 
 	// Determine error states
 	$error = $expired = $expiressoon = $normal = $unknown = 0;
@@ -1115,7 +1115,7 @@ function adrotate_evaluate_ad($ad_id) {
 	$in7days = $now + 604800;
 
 	// Fetch ad
-	$ad = $wpdb->get_row($wpdb->prepare("SELECT `id`, `bannercode`, `tracker`, `imagetype`, `image`, `budget`,`crate`, `irate`, `responsive` FROM `{$wpdb->prefix}adrotate` WHERE `id` = %d;", $ad_id));
+	$ad = $wpdb->get_row($wpdb->prepare("SELECT `id`, `bannercode`, `tracker`, `imagetype`, `image`, `budget`,`crate`, `irate` FROM `{$wpdb->prefix}adrotate` WHERE `id` = %d;", $ad_id));
 	$advertiser = $wpdb->get_var("SELECT `user` FROM `{$wpdb->prefix}adrotate_linkmeta` WHERE `ad` = '{$ad->id}' AND `group` = 0 AND `user` > 0 AND `schedule` = 0;");
 	$stoptime = $wpdb->get_var("SELECT `stoptime` FROM `{$wpdb->prefix}adrotate_schedule`, `{$wpdb->prefix}adrotate_linkmeta` WHERE `ad` = '{$ad->id}' AND `schedule` = `{$wpdb->prefix}adrotate_schedule`.`id` ORDER BY `stoptime` DESC LIMIT 1;");
 	$schedules = $wpdb->get_var("SELECT COUNT(`schedule`) FROM `{$wpdb->prefix}adrotate_linkmeta` WHERE `ad` = '{$ad->id}' AND `group` = 0 AND `user` = 0;");
@@ -1129,7 +1129,6 @@ function adrotate_evaluate_ad($ad_id) {
 		OR ($ad->tracker == 'N' AND $ad->crate > 0)	// Clicktracking in-active but set a Click rate
 		OR (preg_match_all("/(%image%|%asset%)/i", $bannercode, $things) AND $ad->image == '' AND $ad->imagetype == '') // Did use %image% but didn't select an image
 		OR (!preg_match_all("/(%image%|%asset%)/i", $bannercode, $things) AND $ad->image != '' AND $ad->imagetype != '') // Didn't use %image% but selected an image
-		OR ($ad->responsive == 'Y') // Uses Responsive feature
 		OR (($ad->image == '' AND $ad->imagetype != '') OR ($ad->image != '' AND $ad->imagetype == '')) // Image and Imagetype mismatch
 		OR $schedules == 0 // No Schedules for this ad
 	) {
@@ -1847,27 +1846,23 @@ function adrotate_status($status, $args = null) {
 		break;
 
 		case '221' :
-			echo '<div id="message" class="updated"><p>'. __('Advert(s) moved to the bin', 'adrotate-pro') .'</div>';
+			echo '<div id="message" class="updated"><p>'. __('Advert(s) moved to the trash', 'adrotate-pro') .'</div>';
 		break;
 
 		case '222' :
-			echo '<div id="message" class="updated"><p>'. __('Advert(s) restored from bin', 'adrotate-pro') .'</div>';
+			echo '<div id="message" class="updated"><p>'. __('Advert(s) restored from trash', 'adrotate-pro') .'</div>';
 		break;
 
 		case '223' :
 			echo '<div id="message" class="updated"><p>'. __('Your message has been sent.', 'adrotate-pro') .'</p></div>';
 		break;
 
-		case '224' :
-			echo '<div id="message" class="updated"><p>'. __('Transaction saved', 'adrotate-pro') .'</div>';
-		break;
-
-		case '225' :
-			echo '<div id="message" class="updated"><p>'. __('No advert selected. Transaction not saved.', 'adrotate-pro') .'</div>';
-		break;
-
 		case '226' :
 			echo '<div id="message" class="updated"><p>'. __('Advert HTML generated and placed in the AdCode field. Configure your advert below.', 'adrotate-pro') .'</div>';
+		break;
+
+		case '227' :
+			echo '<div id="message" class="updated"><p>'. __('Header & ads.txt updated.', 'adrotate-pro') .'</div>';
 		break;
 
 		// Advertiser messages

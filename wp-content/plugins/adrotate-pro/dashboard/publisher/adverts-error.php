@@ -19,7 +19,7 @@
 		        <option value=""><?php _e('Bulk Actions', 'adrotate-pro'); ?></option>
 		        <option value="deactivate"><?php _e('Deactivate', 'adrotate-pro'); ?></option>
 		        <option value="archive"><?php _e('Archive (Permanently)', 'adrotate-pro'); ?></option>
-		        <option value="bin"><?php _e('Remove', 'adrotate-pro'); ?></option>
+		        <option value="trash"><?php _e('Move to Trash', 'adrotate-pro'); ?></option>
 		        <option value="reset"><?php _e('Reset stats', 'adrotate-pro'); ?></option>
 		        <option value="" disabled><?php _e('-- Renew --', 'adrotate-pro'); ?></option>
 		        <option value="renew-31536000"><?php _e('For 1 year', 'adrotate-pro'); ?></option>
@@ -52,7 +52,6 @@
 			if($banner['type'] == 'a_error') $class = ' row_yellow'; 
 			if($banner['type'] == 'expired') $class = ' row_red';
 			if($banner['type'] == '2days') $class = ' row_orange';
-			if($banner['type'] == 'unpaid') $class = ' row_blue';
 
 			$mobile = '';
 			if($banner['desktop'] == 'Y') {
@@ -85,6 +84,5 @@
 		<span style="border: 1px solid #e6db55; height: 12px; width: 12px; background-color: #ffffe0">&nbsp;&nbsp;&nbsp;&nbsp;</span> <?php _e("Configuration errors", "adrotate-pro"); ?>
 		&nbsp;&nbsp;&nbsp;&nbsp;<span style="border: 1px solid #c80; height: 12px; width: 12px; background-color: #fdefc3">&nbsp;&nbsp;&nbsp;&nbsp;</span> <?php _e("Expires soon", "adrotate-pro"); ?>
 		&nbsp;&nbsp;&nbsp;&nbsp;<span style="border: 1px solid #c00; height: 12px; width: 12px; background-color: #ffebe8">&nbsp;&nbsp;&nbsp;&nbsp;</span> <?php _e("Expired", "adrotate-pro"); ?>
-		&nbsp;&nbsp;&nbsp;&nbsp;<span style="border: 1px solid #466f82; height: 12px; width: 12px; background-color: #8dcede">&nbsp;&nbsp;&nbsp;&nbsp;</span> <?php _e("Unpaid", "adrotate-pro"); ?>
 	</center></p>
 </form>

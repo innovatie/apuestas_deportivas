@@ -1,8 +1,9 @@
 === AdRotate Professional ===
 Contributors: Arnan de Gans
-Requires at least: 3.8
-Tested up to: 5.0
-Stable tag: 4.18.2
+Requires at least: 4.6
+Requires PHP: 5.6
+Tested up to: 5.2.2
+Stable tag: 5.4
 
 == Description ==
 
@@ -25,4 +26,4 @@ In all cases copyright and header must remain intact.
 This Copyright is in full effect in any country that has International Trade Agreements with the United States of America or with the European Union.
 
 Removing any of the copyright notices is expressly forbidden. 
-For more information on how to obtain a license please visit the [AdRotate website](https://ajdg.solutions/products/adrotate-for-wordpress/)
+For more information on how to obtain a license please visit the [AdRotate website](https://ajdg.solutions/plugins/adrotate-for-wordpress/)

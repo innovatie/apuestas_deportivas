@@ -22,29 +22,34 @@
 		<td>
 			<select name="adrotate_stats">
 				<option value="0" <?php if($adrotate_config['stats'] == 0) { echo 'selected'; } ?>><?php _e('Disabled - Do not track stats', 'adrotate-pro'); ?></option>
-				<option value="1" <?php if($adrotate_config['stats'] == 1) { echo 'selected'; } ?>>Internal Tracker (<?php _e('Default', 'adrotate-pro'); ?>)</option>
-				<option value="2" <?php if($adrotate_config['stats'] == 2) { echo 'selected'; } ?>>Piwik/Matomo Analytics</option>
-				<option value="3" <?php if($adrotate_config['stats'] == 3) { echo 'selected'; } ?>>Google Universal Tracker</option>
+				<option value="1" <?php if($adrotate_config['stats'] == 1) { echo 'selected'; } ?>>AdRotate Tracker (<?php _e('Default', 'adrotate-pro'); ?>)</option>
 				<option value="4" <?php if($adrotate_config['stats'] == 4) { echo 'selected'; } ?>>Google Global Tag</option>
+				<option value="5" <?php if($adrotate_config['stats'] == 5) { echo 'selected'; } ?>>Google Tag Manager (<?php _e('Advanced', 'adrotate-pro'); ?>)</option>
+				<option value="3" <?php if($adrotate_config['stats'] == 3) { echo 'selected'; } ?>>Google Universal Tracker</option>
+				<option value="2" <?php if($adrotate_config['stats'] == 2) { echo 'selected'; } ?>>Piwik/Matomo Analytics (<?php _e('Advanced', 'adrotate-pro'); ?>)</option>
 			</select><br />
 			<span class="description">
-				<strong>Interal Tracker</strong> - <?php _e('Tracks impressions and clicks internally', 'adrotate-pro'); ?> - <a href="https://ajdg.solutions/manuals/adrotate-manuals/adrotate-statistics/" target="_blank"><?php _e('Setup guide', 'adrotate-pro'); ?></a>.<br />
-				<strong><?php _e('Supports:', 'adrotate-pro'); ?></strong> <em><?php _e('Click and Impression recording, Click and impression limits, impression spread for schedules, local stats display. Javascript/HTML5/Flash adverts will only track impressions.', 'adrotate-pro'); ?></em><br /><br />
+				<strong>AdRotate Tracker</strong> - <?php _e('Tracks impressions and clicks locally', 'adrotate-pro'); ?> - <a href="https://ajdg.solutions/support/adrotate-manuals/adrotate-statistics/" target="_blank"><?php _e('Setup guide', 'adrotate-pro'); ?></a>.<br />
+				<strong><?php _e('Supports:', 'adrotate-pro'); ?></strong> <em><?php _e('Clicks and Impressions, Click and impression limits, impression spread for schedules. Javascript/HTML5 adverts will only track impressions.', 'adrotate-pro'); ?></em><br /><br />
 
-				<strong>Piwik/Matomo Analytics</strong> - <?php _e('Requires Piwik/Matomo tracker installed in your sites footer, check the guide for details! Uses inline data attributes for tracking', 'adrotate-pro'); ?> - <a href="https://ajdg.solutions/manuals/adrotate-manuals/piwik-analytics/" target="_blank"><?php _e('Setup guide', 'adrotate-pro'); ?></a>.<br />
-				<strong><?php _e('Supports:', 'adrotate-pro'); ?></strong> <em><?php _e('Click and Impression recording via Cookie, stats are displayed in Actions > Contents.', 'adrotate-pro'); ?></em><br /><br />
+				<strong>Google Global Tag</strong> - <?php _e('Requires Google Global Tag tracker installed in your sites footer!', 'adrotate-pro'); ?> - <a href="https://ajdg.solutions/support/adrotate-manuals/google-analytics/installing-and-using-google-global-site-tag/" target="_blank"><?php _e('Setup guide', 'adrotate-pro'); ?></a>.<br />
+				<strong><?php _e('Supports:', 'adrotate-pro'); ?></strong> <em><?php _e('Clicks and Impressions via events. Javascript/HTML5 adverts will only track impressions.', 'adrotate-pro'); ?></em><br /><br />
 
-				<strong>Google Universal Tracker (analytics.js)</strong> - <?php _e('Requires Google Universal tracker installed in your sites footer! Uses inline onClick() and onload() attributes in adverts', 'adrotate-pro'); ?> - <a href="https://ajdg.solutions/manuals/adrotate-manuals/google-analytics/" target="_blank"><?php _e('Setup guide', 'adrotate-pro'); ?></a>.<br />
-				<strong><?php _e('Supports:', 'adrotate-pro'); ?></strong> <em><?php _e('Click and Impression reporting via Cookie, stats are displayed in Events > Banner.', 'adrotate-pro'); ?></em><br /><br />
+				<strong>Google Tag Manager</strong> - <?php _e('Requires Google Tag Manager installed in your sites head tag and a Google Analytics Account!', 'adrotate-pro'); ?>  - <a href="https://ajdg.solutions/support/adrotate-manuals/google-analytics/installing-and-using-google-tag-manager/" target="_blank"><?php _e('Setup guide', 'adrotate-pro'); ?></a>.<br />
+				<strong><?php _e('Supports:', 'adrotate-pro'); ?></strong> <em><?php _e('Clicks and Impressions via custom events. Javascript/HTML5 adverts will only track impressions.', 'adrotate-pro'); ?></em><br /><br />
 
-				<strong>Google Global Tag (gtag.js)</strong> - <?php _e('Requires Google Global Tag tracker installed in your sites footer! Uses inline onClick() and onload() attributes in adverts', 'adrotate-pro'); ?> - <a href="https://ajdg.solutions/manuals/adrotate-manuals/google-analytics/" target="_blank"><?php _e('Setup guide', 'adrotate-pro'); ?></a>.<br />
-				<strong><?php _e('Supports:', 'adrotate-pro'); ?></strong> <em><?php _e('Click and Impression reporting via Cookie, stats are displayed in Events > Banner.', 'adrotate-pro'); ?></em>
+				<strong>Google Universal Tracker</strong> - <?php _e('Maintained for backwards compatibility, please switch to Google Global Tag or Google Tag Manager.', 'adrotate-pro'); ?>.<br />
+				<strong><?php _e('Supports:', 'adrotate-pro'); ?></strong> <em><?php _e('Clicks and Impressions via events. Javascript/HTML5 adverts will only track impressions.', 'adrotate-pro'); ?></em><br /><br />
+				
+				<strong>Piwik/Matomo Analytics</strong> - <?php _e('Requires a extended Piwik/Matomo tracker installed in your sites footer. See the manual for details.', 'adrotate-pro'); ?> - <a href="https://ajdg.solutions/support/adrotate-manuals/piwik-analytics/" target="_blank"><?php _e('Setup guide', 'adrotate-pro'); ?></a>.<br />
+				<strong><?php _e('Supports:', 'adrotate-pro'); ?></strong> <em><?php _e('Click and Impression recording via Cookie. Javascript/HTML5 adverts will only track impressions.', 'adrotate-pro'); ?></em>
+
 			</span>
 		</td>
 	</tr>
 </table>
 
-<h3><?php _e('Internal Tracker', 'adrotate-pro'); ?></h3></td>
+<h3><?php _e('AdRotate Tracker', 'adrotate-pro'); ?></h3></td>
 <span class="description"><?php _e('The settings below are for the internal tracker and have no effect when using Piwik/Google Analytics.', 'adrotate-pro'); ?></span>
 <table class="form-table">
 	<tr>

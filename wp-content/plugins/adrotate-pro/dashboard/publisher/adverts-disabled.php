@@ -21,7 +21,7 @@
 		        <option value=""><?php _e('Bulk Actions', 'adrotate-pro'); ?></option>
 		        <option value="activate"><?php _e('Activate', 'adrotate-pro'); ?></option>
 		        <option value="archive"><?php _e('Archive (Permanently)', 'adrotate-pro'); ?></option>
-		        <option value="bin"><?php _e('Remove', 'adrotate-pro'); ?></option>
+		        <option value="trash"><?php _e('Move to Trash', 'adrotate-pro'); ?></option>
 		        <option value="reset"><?php _e('Reset stats', 'adrotate-pro'); ?></option>
 			</select>
 			<input type="submit" id="post-action-submit" name="adrotate_disabled_action_submit" value="<?php _e('Go', 'adrotate-pro'); ?>" class="button-secondary" />

@@ -21,7 +21,7 @@
 		        <option value="duplicate"><?php _e('Duplicate', 'adrotate-pro'); ?></option>
 		        <option value="deactivate"><?php _e('Deactivate', 'adrotate-pro'); ?></option>
 		        <option value="archive"><?php _e('Archive (Permanently)', 'adrotate-pro'); ?></option>
-		        <option value="bin"><?php _e('Remove', 'adrotate-pro'); ?></option>
+		        <option value="trash"><?php _e('Move to Trash', 'adrotate-pro'); ?></option>
 		        <option value="reset"><?php _e('Reset stats', 'adrotate-pro'); ?></option>
 		        <option value="export-csv"><?php _e('Export to CSV', 'adrotate-pro'); ?></option>
 		        <option value="" disabled><?php _e('-- Renew --', 'adrotate-pro'); ?></option>
@@ -54,7 +54,7 @@
 				<th width="5%"><center><?php _e('Today', 'adrotate-pro'); ?></center></th>
 				<th width="7%"><center><?php _e('CTR', 'adrotate-pro'); ?></center></th>
 			<?php } ?>
-			<?php if($adrotate_config['stats'] == 2 OR $adrotate_config['stats'] == 3) { ?>
+			<?php if($adrotate_config['stats'] > 1) { ?>
 				<th width="7%"><center><?php _e('Stats', 'adrotate-pro'); ?></center></th>
 			<?php } ?>
 		</tr>
@@ -113,7 +113,7 @@
 					<td><center>&hellip;</center></td>
 					<?php } ?>
 				<?php } ?>
-				<?php if($adrotate_config['stats'] == 2 OR $adrotate_config['stats'] == 3) { ?>
+				<?php if($adrotate_config['stats'] > 1) { ?>
 					<td><center><?php echo ($banner['tracker'] == 'Y') ? $tick : $cross; ?></center></td>
 				<?php } ?>
 			</tr>

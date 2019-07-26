@@ -50,7 +50,6 @@ function adrotate_import_ads() {
 							'author' => $current_user->user_login,
 							'imagetype' => ($data[3] == "image" OR $data[3] == "dropdown") ? strip_tags(trim($data[3], "\t\n ")) : '',
 							'image' => (!empty($data[4])) ? strip_tags(trim($data[4], "\t\n ")) : '',
-							'paid' => ($data[5] == "B" OR $data[5] == "S" OR $data[5] == "U") ? strip_tags(trim($data[5], "\t\n ")) : 'U',
 							'tracker' => ($data[6] == "Y" OR $data[6] == "N") ? strip_tags(trim($data[6], "\t\n ")) : 'N',
 							'desktop' => ($data[7] == "Y" OR $data[7] == "N") ? strip_tags(trim($data[7], "\t\n ")) : 'Y',
 							'mobile' => ($data[8] == "Y" OR $data[8] == "N") ? strip_tags(trim($data[8], "\t\n ")) : 'Y',

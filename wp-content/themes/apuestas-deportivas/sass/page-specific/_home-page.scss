@@ -1,3 +1,97 @@
+@font-face {
+    font-family: 'NettoOT';
+    font-style: normal;
+    font-weight: 700;
+    src: url('assets/fonts/NettoOT-Bold.eot');
+    /* IE9 Compat Modes */
+    src: local('NettoOT Bold'), local('NettoOT-Bold'),
+        url('assets/fonts/nettoot/NettoOT-Bold.eot?#iefix') format('embedded-opentype'),
+        /* IE6-IE8 */
+        url('assets/fonts/nettoot/NettoOT-Bold.woff2') format('woff2'),
+        /* Super Modern Browsers */
+        url('assets/fonts/nettoot/NettoOT-Bold.woff') format('woff'),
+        /* Modern Browsers */
+        url('assets/fonts/nettoot/NettoOT-Bold.ttf') format('truetype'),
+        /* Safari, Android, iOS */
+        url('assets/fonts/nettoot/NettoOT-Bold.svg#Poppins') format('svg');
+    /* Legacy iOS */
+}
+@font-face {
+    font-family: 'ProximaNova';
+    font-style: normal;
+    font-weight: 400;
+    src: url('assets/fonts/ProximaNova-Regular.eot');
+    /* IE9 Compat Modes */
+    src: local('ProximaNova Regular'), local('ProximaNova-Regular'),
+        url('assets/fonts/proxima-nova/ProximaNova-Regular.eot?#iefix') format('embedded-opentype'),
+        /* IE6-IE8 */
+        url('assets/fonts/proxima-nova/ProximaNova-Regular.woff2') format('woff2'),
+        /* Super Modern Browsers */
+        url('assets/fonts/proxima-nova/ProximaNova-Regular.woff') format('woff'),
+        /* Modern Browsers */
+        url('assets/fonts/proxima-nova/ProximaNova-Regular.ttf') format('truetype'),
+        /* Safari, Android, iOS */
+        url('assets/fonts/proxima-nova/ProximaNova-Regular.svg#Poppins') format('svg');
+    /* Legacy iOS */
+}
+.header-navigation{
+    .main-navigation{
+        >ul{
+            >li{
+                &.header-download{
+                    a{
+                        background: $color-blue;
+                        &:hover{
+                            background: $color-dark;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.primary-logo{
+    img.light{
+        filter: brightness(0) invert(1);
+    }
+}
+.back-to-top{
+    color: $color-blue;
+}
+.scrolled{
+    .header-navigation{
+        .main-navigation{
+            >ul{
+                >li{
+                    &.header-download{
+                        a{
+                            background: $color-blue;
+                            &:hover{
+                                background: $color-dark;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.float-white{
+    h3{
+        font-size: 22px;
+    }
+    h6,h4{
+        font-size: 16px;
+        line-height: 1.63;
+    }
+    p{
+        font-size: 16px;
+        line-height: 1.63;
+        font-weight: 300;
+    }
+}
+
 .hero-deg{
     &:before{
         background: url(assets/images/hero-deg.png);
@@ -8,6 +102,10 @@
     	text-align: left;
     	h1{
     		text-align: left;
+            font-family: $secundary_font;
+            p{
+                font-family: $primary_font;
+            }
     	}
     	p{
     		float: left;
@@ -42,3 +140,139 @@
 .link-cta{
     color: $color-yellow;
 }
+.socials-footer{
+    background: $color-blue;
+}
+a.cta-event-link{
+    .icon{
+        background: #0da375;
+    }
+}
+.review-block{
+    .btn-solid{
+        border: 2px solid transparent;
+    }
+    &:hover{
+        .btn-solid{
+            background: $color-white;
+            color: $color-yellow;
+            border-color: $color-yellow;
+        }
+    }
+}
+.pre-footer{
+    .container-pre-footer{
+        .container-form{
+            input[type=submit]{
+                background: $color-blue;
+            }
+        }
+    }
+}
+.bonus-list{
+    .item-gray-cont{
+        background: $color-blue;
+        .details-bonus{
+            h5,p{
+                color: $color-white;
+            }
+            .link-b{
+                a{
+                    background: $color-yellow;
+                }
+            }
+        }
+    }
+    .item-regular{
+        .bonus-link{
+            a{
+                background: $color-blue;
+            }
+        }
+    }
+    &.bl-v2{
+        .item-gray-cont{
+            width: calc(50% - 20px);
+            float: left;
+            margin: 0 10px;
+            margin-bottom: 20px;
+            .details-bonus{
+                width: 100%;
+            }
+        }
+        .item-regular{
+            margin-left: 10px;
+            margin-right: 10px;
+            &:nth-child(5),
+            &:nth-child(6),
+            &:nth-child(3),
+            &:nth-child(4){
+                width: calc(50% - 20px);
+                float: left;
+                margin: 0 10px;
+                margin-bottom: 20px;
+                flex-direction: column;
+                .bonus-details,
+                .bonus-link{
+                    width: 100%;
+                }
+                .bonus-link{
+                    a{
+                        float: none;
+                    }
+                }
+            }
+        }
+        @media screen and (max-width: 960px){
+            .item-gray-cont{
+                width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+            }
+            .item-regular{
+                margin-left: 0;
+                margin-right: 0;
+                &:nth-child(5),
+                &:nth-child(6),
+                &:nth-child(3),
+                &:nth-child(4){
+                    width: 100%;
+                    margin-left: 0;
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+}
+.review-block-dark{
+    .btn-solid{
+        background: $color-black;
+    }
+}
+.dark-reviews-container{
+    .single-items{
+        .dsc-cnt-s{
+            .quote{
+                i{
+                    color: $color-black;
+                }
+            }
+        }
+    }
+}
+.navigation-reviews{
+    a{
+        background: $color-blue;
+    }
+}
+.single-carousel{
+    .item-post{
+        flex-direction: column;
+    }
+}
+.lp-img{
+    padding-left: 60px;
+}
+
+
+

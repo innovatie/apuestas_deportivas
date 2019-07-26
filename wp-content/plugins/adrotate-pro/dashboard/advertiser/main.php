@@ -27,7 +27,6 @@
 			<th width="5%"><center><?php _e('Today', 'adrotate-pro'); ?></center></th>
 			<th width="7%"><center><?php _e('CTR', 'adrotate-pro'); ?></center></th>
 		<?php } ?>
-		<th width="17%"><?php _e('Contact publisher', 'adrotate-pro'); ?></th>
 	</tr>
 	</thead>
 	
@@ -39,9 +38,6 @@
 			$stats_today = adrotate_stats($banner['id'], false, $today);
 			$ctr = adrotate_ctr($stats['clicks'], $stats['impressions']);
 		}
-
-		$wpnonceaction = 'adrotate_email_advertiser_'.$banner['id'];
-		$nonce = wp_create_nonce($wpnonceaction);
 
 		$errorclass = $class = '';
 		if('alternate' == $class) $class = 'alternate'; else $class = '';
@@ -82,7 +78,6 @@
 				<td><center><?php echo $stats_today['clicks'];?></center></td>
 				<td><center><?php echo $ctr; ?> %</center></td>
 			<?php } ?>
-			<td><a href="admin.php?page=adrotate-advertiser&view=message&request=renew&id=<?php echo $banner['id']; ?>&_wpnonce=<?php echo $nonce; ?>"><?php _e('Renew', 'adrotate-pro'); ?></a> - <a href="admin.php?page=adrotate-advertiser&view=message&request=remove&id=<?php echo $banner['id']; ?>&_wpnonce=<?php echo $nonce; ?>"><?php _e('Remove', 'adrotate-pro'); ?></a> - <a href="admin.php?page=adrotate-advertiser&view=message&request=other&id=<?php echo $banner['id']; ?>&_wpnonce=<?php echo $nonce; ?>"><?php _e('Other', 'adrotate-pro'); ?></a></td>
 		</tr>
 		<?php } ?>
 	</tbody>

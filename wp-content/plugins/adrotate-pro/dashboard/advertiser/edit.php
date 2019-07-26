@@ -11,11 +11,17 @@
 
 //Permissions
 $permissions = get_user_meta($current_user->ID, 'adrotate_permissions', 1);
+
+// If permissions are not explicitly defined
+if(!isset($permissions['edit'])) $permissions['edit'] = 'N';
+if(!isset($permissions['mobile'])) $permissions['mobile'] = 'N';
+if(!isset($permissions['geo'])) $permissions['geo'] = 'N';
+
 if($adrotate_config['enable_editing'] == 'Y' AND $permissions['edit'] == 'Y') {
 	if(!$ad_edit_id) {
 		$edit_id = $wpdb->get_var("SELECT `id` FROM `{$wpdb->prefix}adrotate` WHERE `type` = 'a_empty' AND 'author' = '{$current_user->user_login}' ORDER BY `id` DESC LIMIT 1;");
 		if($edit_id == 0) {
-		    $wpdb->insert($wpdb->prefix."adrotate", array('title' => '', 'bannercode' => '', 'thetime' => $now, 'updated' => $now, 'author' => $current_user->user_login, 'imagetype' => 'dropdown', 'image' => '', 'paid' => 'U', 'tracker' => 'Y', 'desktop' => 'Y', 'mobile' => 'Y', 'tablet' => 'Y', 'os_ios' => 'Y', 'os_android' => 'Y', 'os_other' => 'Y', 'responsive' => 'N', 'type' => 'a_empty', 'weight' => 6, 'budget' => 0, 'crate' => 0, 'irate' => 0, 'cities' => serialize(array()), 'countries' => serialize(array())));
+		    $wpdb->insert($wpdb->prefix."adrotate", array('title' => '', 'bannercode' => '', 'thetime' => $now, 'updated' => $now, 'author' => $current_user->user_login, 'imagetype' => 'dropdown', 'image' => '', 'tracker' => 'Y', 'desktop' => 'Y', 'mobile' => 'Y', 'tablet' => 'Y', 'os_ios' => 'Y', 'os_android' => 'Y', 'os_other' => 'Y', 'type' => 'a_empty', 'weight' => 6, 'budget' => 0, 'crate' => 0, 'irate' => 0, 'cities' => serialize(array()), 'countries' => serialize(array())));
 		    $edit_id = $wpdb->insert_id;
 		    $wpdb->insert("{$wpdb->prefix}adrotate_linkmeta", array('ad' => $edit_id, 'group' => 0, 'user' => $current_user->ID, 'schedule' => 0));
 		}
@@ -105,13 +111,13 @@ if($adrotate_config['enable_editing'] == 'Y' AND $permissions['edit'] == 'Y') {
 		        var input = jQuery("#adrotate_bannercode").val();
 		        if(jQuery("#adrotate_title").val().length > 0) var ad_title = jQuery("#adrotate_title").val();
 		        var ad_image = '';
-		        if(jQuery("#adrotate_image_dropdown").val().length > 0) var ad_image = '<?php echo WP_CONTENT_URL.$adrotate_config['banner_folder']; ?>'+jQuery("#adrotate_image_dropdown").val();
+		        if(jQuery("#adrotate_image_dropdown").val().length > 0) var ad_image = '<?php echo WP_CONTENT_URL.'/'.$adrotate_config['banner_folder']; ?>/'+jQuery("#adrotate_image_dropdown").val();
 		
 		        var input = input.replace(/%id%/g, <?php echo $edit_banner->id;?>);
 		        var input = input.replace(/%title%/g, ad_title);
 		        var input = input.replace(/%asset%/g, ad_image);
 		        var input = input.replace(/%image%/g, ad_image);
-		        var input = input.replace(/%random%/g, <?php echo mt_rand(100000,999999); ?>);
+		        var input = input.replace(/%random%/g, <?php echo rand(100000,999999); ?>);
 		        jQuery("#adrotate_preview").html(input);
 		    }       
 		    livePreview();
@@ -152,8 +158,8 @@ if($adrotate_config['enable_editing'] == 'Y' AND $permissions['edit'] == 'Y') {
 		        </td>
 		        <td>
 		        <p><strong><?php _e('Basic Examples:', 'adrotate-pro'); ?></strong></p>
-				<p><em><a href="#" onclick="textatcursor('adrotate_bannercode','&lt;a href=&quot;http://www.adrotateforwordpress.com&quot;&gt;&lt;img src=&quot;%asset%&quot; /&gt;&lt;/a&gt;');return false;">&lt;a href="http://www.adrotateforwordpress.com"&gt;&lt;img src="%asset%" /&gt;&lt;/a&gt;</a></em></p>
-		        <p><em><a href="#" onclick="textatcursor('adrotate_bannercode','&lt;span class=&quot;ad-%id%&quot;&gt;&lt;a href=&quot;http://www.adrotateforwordpress.com&quot;&gt;Text Link Ad!&lt;/a&gt;&lt;/span&gt;');return false;">&lt;span class="ad-%id%"&gt;&lt;a href="http://www.adrotateforwordpress.com"&gt;Text Link Ad!&lt;/a&gt;&lt;/span&gt;</a></em></p>
+				<p><em><a href="#" onclick="textatcursor('adrotate_bannercode','&lt;a href=&quot;https://ajdg.solutions/&quot;&gt;&lt;img src=&quot;%asset%&quot; /&gt;&lt;/a&gt;');return false;">&lt;a href="http://www.adrotateforwordpress.com"&gt;&lt;img src="%asset%" /&gt;&lt;/a&gt;</a></em></p>
+		        <p><em><a href="#" onclick="textatcursor('adrotate_bannercode','&lt;span class=&quot;ad-%id%&quot;&gt;&lt;a href=&quot;https://ajdg.solutions/&quot;&gt;Text Link Ad!&lt;/a&gt;&lt;/span&gt;');return false;">&lt;span class="ad-%id%"&gt;&lt;a href="https://ajdg.solutions/"&gt;Text Link Ad!&lt;/a&gt;&lt;/span&gt;</a></em></p>
 		        <p><em><a href="#" onclick="textatcursor('adrotate_bannercode','&lt;iframe src=&quot;%asset%&quot; height=&quot;250&quot; frameborder=&quot;0&quot; style=&quot;border:none;&quot;&gt;&lt;/iframe&gt;');return false;">&lt;iframe src=&quot;%asset%&quot; height=&quot;250&quot; frameborder=&quot;0&quot; style=&quot;border:none;&quot;&gt;&lt;/iframe&gt;</a></em></p>
 		        </td>
 	      	</tr>
@@ -267,39 +273,31 @@ if($adrotate_config['enable_editing'] == 'Y' AND $permissions['edit'] == 'Y') {
 			<h2><?php _e('Geo Targeting', 'adrotate-pro'); ?></h2>
 			<div id="dashboard-widgets-wrap">
 				<div id="dashboard-widgets" class="metabox-holder">
+					<div id="left-column" class="ajdg-postbox-container">
 			
-					<div id="postbox-container-1" class="postbox-container" style="width:50%;">
-						<div class="meta-box-sortables">
-							
-							<div class="postbox-ajdg">
-								<div class="inside">
-									<p><strong>Select Countries and or Regions</strong></p>
-									<div class="adrotate-select">
-								        <?php echo adrotate_select_countries($countries); ?>
-									</div>
+						<div class="ajdg-postbox">				
+							<h2 class="ajdg-postbox-title"><?php _e('Select Countries and or Regions', 'adrotate-pro'); ?></h2>
+							<div id="countries" class="ajdg-postbox-content">
+								<div class="adrotate-select ajdg-fullwidth">
+							        <?php echo adrotate_select_countries($countries); ?>
 								</div>
 							</div>
+						</div>
 			
-						</div>
 					</div>
-		
-					<div id="postbox-container-3" class="postbox-container" style="width:50%;">
-						<div class="meta-box-sortables">
-									
-							<div class="postbox-ajdg">
-								<div class="inside">
-		
-									<p><strong>Enter cities, metro IDs, States or State ISO codes</strong></p>
-									<textarea tabindex="36" name="adrotate_geo_cities" class="geo-cities" cols="40" rows="6"><?php echo (is_array($cities)) ? implode(', ', $cities) : ''; ?></textarea><br />
-				        <p><em><?php _e('A comma separated list of items:', 'adrotate-pro'); ?> (Alkmaar, New York, Manila, Tokyo) <?php _e('AdRotate does not check the validity of names so make sure you spell them correctly!', 'adrotate-pro'); ?></em></p>
-								</div>
+					<div id="right-column" class="ajdg-postbox-container">
+			
+						<div class="ajdg-postbox">
+							<h2 class="ajdg-postbox-title"><?php _e('Enter cities, metro IDs, States or State ISO codes', 'adrotate-pro'); ?></h2>
+							<div id="cities" class="ajdg-postbox-content">
+								<textarea tabindex="32" name="adrotate_geo_cities" class="geo-cities ajdg-fullwidth" cols="40" rows="6"><?php echo (is_array($cities)) ? implode(', ', $cities) : ''; ?></textarea><br />
+								<p><em><?php _e('A comma separated list of items:', 'adrotate-pro'); ?> (Alkmaar, New York, Manila, Tokyo) <?php _e('AdRotate does not check the validity of names so make sure you spell them correctly!', 'adrotate-pro'); ?></em></p>
 							</div>
-		
 						</div>
+			
 					</div>
-		
-			    </div>
-		    </div>
+				</div>
+			</div>
 		   	<div class="clear"></div>
       	<?php } ?>
 		
@@ -410,6 +408,6 @@ if($adrotate_config['enable_editing'] == 'Y' AND $permissions['edit'] == 'Y') {
 		</form>
 <?php } else { ?>
 	<h3><?php _e('Editing and creating adverts is not available right now', 'adrotate-pro'); ?></h3>
-	<p><?php _e('The administrator has disabled editing of adverts.', 'adrotate-pro'); ?> <a href="admin.php?page=adrotate-advertiser&view=message&request=other&id=<?php echo $edit_banner->id; ?>&_wpnonce=<?php echo wp_create_nonce('adrotate_email_advertiser_'.$edit_banner->id); ?>"><?php _e('Contact sales', 'adrotate-pro'); ?></a>.</p>
+	<p><?php _e('The administrator has disabled editing of adverts. Contact your representative if you think this is incorrect.', 'adrotate-pro'); ?></p>
 
 <?php } ?>

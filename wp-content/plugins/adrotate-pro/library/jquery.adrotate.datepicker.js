@@ -1,13 +1,13 @@
 /*
-Fallback datepicker for non-compliant browsers
-Arnan de Gans (http://www.arnan.me)
-Version: 0.2
+Datepicker for exports and graphs
+Arnan de Gans (https://www.arnan.me)
+Version: 0.3
 Original code: Arnan de Gans
 */
  
 /* ------------------------------------------------------------------------------------
 *  COPYRIGHT AND TRADEMARK NOTICE
-*  Copyright 2008-2018 Arnan de Gans. All Rights Reserved.
+*  Copyright 2008-2019 Arnan de Gans. All Rights Reserved.
 *  ADROTATE is a trademark of Arnan de Gans.
 
 *  COPYRIGHT NOTICES AND ALL THE COMMENTS SHOULD REMAIN INTACT.
@@ -17,6 +17,8 @@ Original code: Arnan de Gans
 
 (function($) {
 	$(document).ready(function() {
+		$('#startdate_graph_picker').datepicker({dateFormat: 'dd-mm-yy'}); 
+		$('#enddate_graph_picker').datepicker({dateFormat: 'dd-mm-yy'}); 
 		$('#startdate_picker').datepicker({dateFormat: 'dd-mm-yy'}); 
 		$('#enddate_picker').datepicker({dateFormat: 'dd-mm-yy'}); 
 	});

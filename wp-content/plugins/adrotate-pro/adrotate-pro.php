@@ -1,13 +1,13 @@
 <?php
 /*
 Plugin Name: AdRotate Professional
-Plugin URI: https://ajdg.solutions/products/adrotate-for-wordpress/
+Plugin URI: https://ajdg.solutions/plugins/adrotate-for-wordpress/
 Author: Arnan de Gans
 Author URI: https://www.arnan.me/
 Description: AdRotate Pro is the popular choice for monetizing your website with adverts while keeping things simple.
 Text Domain: adrotate-pro
 Domain Path: /languages/
-Version: 4.18.2
+Version: 5.4
 License: Limited License (See the readme.html in your account on https://ajdg.solutions/)
 */
 
@@ -22,9 +22,9 @@ License: Limited License (See the readme.html in your account on https://ajdg.so
 ------------------------------------------------------------------------------------ */
 
 /*--- AdRotate values ---------------------------------------*/
-define("ADROTATE_DISPLAY", '4.18.2 Professional');
-define("ADROTATE_VERSION", 392);
-define("ADROTATE_DB_VERSION", 64);
+define("ADROTATE_DISPLAY", '5.4 Professional');
+define("ADROTATE_VERSION", 393);
+define("ADROTATE_DB_VERSION", 65);
 $plugin_folder = plugin_dir_path(__FILE__);
 /*-----------------------------------------------------------*/
 
@@ -33,7 +33,6 @@ require_once($plugin_folder.'/adrotate-setup.php');
 require_once($plugin_folder.'/adrotate-manage-publisher.php');
 require_once($plugin_folder.'/adrotate-manage-advertiser.php');
 require_once($plugin_folder.'/adrotate-functions.php');
-require_once($plugin_folder.'/adrotate-advertiser-functions.php');
 require_once($plugin_folder.'/adrotate-statistics.php');
 require_once($plugin_folder.'/adrotate-import.php');
 require_once($plugin_folder.'/adrotate-export.php');
@@ -59,7 +58,7 @@ register_deactivation_hook(__FILE__, 'adrotate_deactivate');
 register_uninstall_hook(__FILE__, 'adrotate_uninstall');
 add_action('adrotate_notification', 'adrotate_notifications');
 add_action('adrotate_evaluate_ads', 'adrotate_evaluate_ads');
-add_action('adrotate_empty_bin', 'adrotate_empty_bin');
+add_action('adrotate_empty_trash', 'adrotate_empty_trash');
 add_action('adrotate_empty_trackerdata', 'adrotate_empty_trackerdata');
 add_action('adrotate_auto_delete', 'adrotate_auto_delete');
 add_action( 'widgets_init', 'adrotate_group_widget' ); // Group widget
@@ -70,11 +69,6 @@ add_filter('adrotate_apply_photon', 'adrotate_apply_jetpack_photon');
 
 /*--- Front end ---------------------------------------------*/
 if(!is_admin()) {
-	if($adrotate_config['adminbar'] == 'Y') {
-		if((adrotate_is_networked() AND $adrotate_network['site_dashboard'] == "Y") OR $adrotate_network['primary'] == $blog_id OR !adrotate_is_networked()) {
-			add_action('admin_bar_menu', 'adrotate_adminmenu', 100);
-		}
-	}
 	if($adrotate_config['enable_geo'] > 0 AND get_option('adrotate_geo_required') > 0) {
 		add_action('init', 'adrotate_geolocation');
 	}
@@ -82,9 +76,8 @@ if(!is_admin()) {
 		add_filter('widget_text', 'do_shortcode');
 	}
 	add_shortcode('adrotate', 'adrotate_shortcode');
-	add_shortcode('adrotate_advertiser_dashboard', 'adrotate_front_end');
-	add_action('wp_enqueue_scripts', 'adrotate_custom_scripts');
-	add_action('wp_head', 'adrotate_custom_css');
+	add_action('wp_head', 'adrotate_header');
+	add_action('wp_enqueue_scripts', 'adrotate_scripts');
 	add_filter('the_content', 'adrotate_inject_posts', 12);
 
 /////
@@ -122,10 +115,10 @@ if(is_admin()) {
 
 	/*--- Publisher ---------------------------------------------*/
 	if(isset($_POST['adrotate_generate_submit'])) add_action('init', 'adrotate_generate_input');
+	if(isset($_POST['adrotate_save_header'])) add_action('init', 'adrotate_save_header');
 	if(isset($_POST['adrotate_ad_submit'])) add_action('init', 'adrotate_insert_input');
 	if(isset($_POST['adrotate_group_submit'])) add_action('init', 'adrotate_insert_group');
 	if(isset($_POST['adrotate_schedule_submit'])) add_action('init', 'adrotate_insert_schedule');
-	if(isset($_POST['adrotate_transaction_submit'])) add_action('init', 'adrotate_insert_transaction');
 	if(isset($_POST['adrotate_media_submit'])) add_action('init', 'adrotate_insert_media');
 	if(isset($_POST['adrotate_advertiser_submit'])) add_action('init', 'adrotate_insert_advertiser');
 	if(isset($_POST['adrotate_action_submit'])) add_action('init', 'adrotate_request_action');
@@ -171,20 +164,21 @@ if(is_admin()) {
 function adrotate_dashboard() {
 	global $adrotate_config;
 
-	$adrotate_page = $adrotate_adverts = $adrotate_groups = $adrotate_schedules = $adrotate_statistics = $adrotate_advertisers = $adrotate_transactions = $adrotate_media = $adrotate_settings = '';
+	$adrotate_page = $adrotate_adverts = $adrotate_groups = $adrotate_schedules = $adrotate_statistics = $adrotate_advertisers = $adrotate_media = $adrotate_settings = '';
 
 	add_menu_page('AdRotate Pro', 'AdRotate Pro', 'manage_options', 'adrotate', 'adrotate_info', plugins_url('/images/icon-menu.png', __FILE__), '25.8');
 	$adrotate_page = add_submenu_page('adrotate', 'AdRotate Pro · '.__('General Info', 'adrotate-pro'), __('General Info', 'adrotate-pro'), 'adrotate_ad_manage', 'adrotate', 'adrotate_info');
-	$adrotate_adverts = add_submenu_page('adrotate', 'AdRotate Pro · '.__('Adverts', 'adrotate-pro'), __('Adverts', 'adrotate-pro'), 'adrotate_ad_manage', 'adrotate-ads', 'adrotate_manage');
-	$adrotate_groups = add_submenu_page('adrotate', 'AdRotate Pro · '.__('Groups', 'adrotate-pro'), __('Groups', 'adrotate-pro'), 'adrotate_group_manage', 'adrotate-groups', 'adrotate_manage_group');
-	$adrotate_schedules = add_submenu_page('adrotate', 'AdRotate Pro · '.__('Schedules', 'adrotate-pro'), __('Schedules', 'adrotate-pro'), 'adrotate_schedule_manage', 'adrotate-schedules', 'adrotate_manage_schedules');
+	$adrotate_adverts = add_submenu_page('adrotate', 'AdRotate Pro · '.__('Manage Adverts', 'adrotate-pro'), __('Manage Adverts', 'adrotate-pro'), 'adrotate_ad_manage', 'adrotate-ads', 'adrotate_manage');
+	$adrotate_groups = add_submenu_page('adrotate', 'AdRotate Pro · '.__('Manage Groups', 'adrotate-pro'), __('Manage Groups', 'adrotate-pro'), 'adrotate_group_manage', 'adrotate-groups', 'adrotate_manage_group');
+	$adrotate_schedules = add_submenu_page('adrotate', 'AdRotate Pro · '.__('Manage Schedules', 'adrotate-pro'), __('Manage Schedules', 'adrotate-pro'), 'adrotate_schedule_manage', 'adrotate-schedules', 'adrotate_manage_schedules');
 	if($adrotate_config['stats'] == 1) {
 		$adrotate_statistics = add_submenu_page('adrotate', 'AdRotate Pro · '.__('Statistics', 'adrotate-pro'), __('Statistics', 'adrotate-pro'), 'adrotate_global_report', 'adrotate-statistics', 'adrotate_statistics');
 	}
 	if($adrotate_config['enable_advertisers'] == 'Y') {
 		$adrotate_advertisers = add_submenu_page('adrotate', 'AdRotate Pro · '.__('Advertisers', 'adrotate-pro'), __('Advertisers', 'adrotate-pro'), 'adrotate_advertiser_manage', 'adrotate-advertisers', 'adrotate_manage_advertisers');
 	}
-	$adrotate_media = add_submenu_page('adrotate', 'AdRotate Pro · '.__('Media', 'adrotate-pro'), __('Media', 'adrotate-pro'), 'adrotate_ad_manage', 'adrotate-media', 'adrotate_manage_media');
+	$adrotate_media = add_submenu_page('adrotate', 'AdRotate Pro · '.__('Manage Media', 'adrotate-pro'), __('Manage Media', 'adrotate-pro'), 'adrotate_ad_manage', 'adrotate-media', 'adrotate_manage_media');
+	$adrotate_support = add_submenu_page('adrotate', 'AdRotate Pro · '.__('Premium Support', 'adrotate-pro'), __('Premium Support', 'adrotate-pro'), 'manage_options', 'adrotate-support', 'adrotate_support');
 	$adrotate_settings = add_submenu_page('adrotate', 'AdRotate Pro · '.__('Settings', 'adrotate-pro'), __('Settings', 'adrotate-pro'), 'manage_options', 'adrotate-settings', 'adrotate_options');
 	
 	if($adrotate_config['enable_advertisers'] == 'Y') {
@@ -199,30 +193,9 @@ function adrotate_dashboard() {
 	add_action('load-'.$adrotate_schedules, 'adrotate_help_info');
 	add_action('load-'.$adrotate_statistics, 'adrotate_help_info');
 	add_action('load-'.$adrotate_advertisers, 'adrotate_help_info');
-	add_action('load-'.$adrotate_transactions, 'adrotate_help_info');
 	add_action('load-'.$adrotate_media, 'adrotate_help_info');
+	add_action('load-'.$adrotate_support, 'adrotate_help_info');
 	add_action('load-'.$adrotate_settings, 'adrotate_help_info');
-}
-
-/*-------------------------------------------------------------
- Name:      adrotate_adminmenu
- Purpose:   Add things to the admin bar
- Since:		3.8
--------------------------------------------------------------*/
-function adrotate_adminmenu() {
-    global $wp_admin_bar, $adrotate_config;
-
-	if(!is_super_admin() OR !is_admin_bar_showing())
-		return;
-
-    $wp_admin_bar->add_node(array( 'id' => 'adrotate', 'title' => __('AdRotate', 'adrotate-pro'), 'href' => admin_url('/admin.php?page=adrotate')));
-    $wp_admin_bar->add_node(array( 'id' => 'adrotate-ads-new','parent' => 'adrotate', 'title' => __('Add new Advert', 'adrotate-pro'), 'href' => admin_url('/admin.php?page=adrotate-ads&view=addnew')));
-    $wp_admin_bar->add_node(array( 'id' => 'adrotate-ads','parent' => 'adrotate', 'title' => __('Manage Adverts', 'adrotate-pro'), 'href' => admin_url('/admin.php?page=adrotate-ads')));
-    $wp_admin_bar->add_node(array( 'id' => 'adrotate-groups','parent' => 'adrotate', 'title' => __('Manage Groups', 'adrotate-pro'), 'href' => admin_url('/admin.php?page=adrotate-groups')));
-    $wp_admin_bar->add_node(array( 'id' => 'adrotate-schedules','parent' => 'adrotate', 'title' => __('Manage Schedules', 'adrotate-pro'), 'href' => admin_url('/admin.php?page=adrotate-schedules')));
-	if($adrotate_config['stats'] == 1) {
-		$wp_admin_bar->add_node(array( 'id' => 'adrotate-statistics','parent' => 'adrotate', 'title' => __('Statistics', 'adrotate-pro'), 'href' => admin_url('/admin.php?page=adrotate-statistics')));
-	}
 }
 
 /*-------------------------------------------------------------
@@ -300,14 +273,14 @@ function adrotate_manage() {
 		<?php if($status > 0) adrotate_status($status, array('file' => $file)); ?>
 
 		<?php		
-		$allbanners = $wpdb->get_results("SELECT `id`, `title`, `type`, `paid`, `tracker`, `weight`, `autodelete`, `desktop`, `mobile`, `tablet`, `budget`, `crate`, `irate` FROM `{$wpdb->prefix}adrotate` WHERE `type` != 'empty' AND `type` != 'a_empty' ORDER BY `id` ASC;");
+		$allbanners = $wpdb->get_results("SELECT `id`, `title`, `type`, `tracker`, `weight`, `autodelete`, `desktop`, `mobile`, `tablet`, `budget`, `crate`, `irate` FROM `{$wpdb->prefix}adrotate` WHERE `type` != 'empty' AND `type` != 'a_empty' ORDER BY `id` ASC;");
 
-		$active = $error = $disabled = $queued = $archive = $bin = false;
+		$active = $error = $disabled = $queued = $archive = $trash = false;
 		foreach($allbanners as $singlebanner) {
 			$advertiser = '';
 			$starttime = $stoptime = 0;
-			$starttime = $wpdb->get_var("SELECT `starttime` FROM `{$wpdb->prefix}adrotate_schedule`, `{$wpdb->prefix}adrotate_linkmeta` WHERE `ad` = '".$singlebanner->id."' AND `schedule` = `{$wpdb->prefix}adrotate_schedule`.`id` ORDER BY `starttime` ASC LIMIT 1;");
-			$stoptime = $wpdb->get_var("SELECT `stoptime` FROM `{$wpdb->prefix}adrotate_schedule`, `{$wpdb->prefix}adrotate_linkmeta` WHERE `ad` = '".$singlebanner->id."' AND  `schedule` = `{$wpdb->prefix}adrotate_schedule`.`id` ORDER BY `stoptime` DESC LIMIT 1;");
+			$starttime = $wpdb->get_var("SELECT `starttime` FROM `{$wpdb->prefix}adrotate_schedule`, `{$wpdb->prefix}adrotate_linkmeta` WHERE `ad` = '{$singlebanner->id}' AND `schedule` = `{$wpdb->prefix}adrotate_schedule`.`id` ORDER BY `starttime` ASC LIMIT 1;");
+			$stoptime = $wpdb->get_var("SELECT `stoptime` FROM `{$wpdb->prefix}adrotate_schedule`, `{$wpdb->prefix}adrotate_linkmeta` WHERE `ad` = '{$singlebanner->id}' AND  `schedule` = `{$wpdb->prefix}adrotate_schedule`.`id` ORDER BY `stoptime` DESC LIMIT 1;");
 			if($adrotate_config['enable_advertisers'] == 'Y') {
 				$advertiser = $wpdb->get_var("SELECT `display_name` FROM `{$wpdb->prefix}adrotate_linkmeta`, `$wpdb->users` WHERE `$wpdb->users`.`id` = `{$wpdb->prefix}adrotate_linkmeta`.`user` AND `ad` = '{$singlebanner->id}' AND `group` = '0' AND `schedule` = '0' LIMIT 1;");
 			}
@@ -316,8 +289,6 @@ function adrotate_manage() {
 			if($type == 'active' AND $stoptime <= $now) $type = 'expired'; 
 			if($type == 'active' AND $stoptime <= $in2days) $type = '2days';
 			if($type == 'active' AND $stoptime <= $in7days) $type = '7days';
-			if($type == 'active' AND $singlebanner->paid == "N") $type = 'unpaid';
-			if(($singlebanner->crate > 0 OR $singlebanner->irate > 0) AND $singlebanner->budget < 1) $type = 'unpaid';
 			
 			$title = (strlen($singlebanner->title) == 0) ? 'Advert '.$singlebanner->id.' [temp]' : $singlebanner->title;
 
@@ -341,7 +312,7 @@ function adrotate_manage() {
 				);
 			}
 			
-			if($type == 'error' OR $type == 'a_error' OR $type == 'expired' OR $type == '2days' OR $type == 'unpaid') {
+			if($type == 'error' OR $type == 'a_error' OR $type == 'expired' OR $type == '2days') {
 				$error[$singlebanner->id] = array(
 					'id' => $singlebanner->id,
 					'title' => $title,
@@ -409,8 +380,8 @@ function adrotate_manage() {
 				);
 			}
 
-			if($type == 'bin') {
-				$bin[$singlebanner->id] = array(
+			if($type == 'trash') {
+				$trash[$singlebanner->id] = array(
 					'id' => $singlebanner->id,
 					'title' => $title,
 					'advertiser' => $advertiser,
@@ -433,11 +404,12 @@ function adrotate_manage() {
 				<a class="row-title" href="<?php echo admin_url('/admin.php?page=adrotate-ads');?>"><?php _e('Manage', 'adrotate-pro'); ?></a>
 				&nbsp;|&nbsp;<a class="row-title" href="<?php echo admin_url('/admin.php?page=adrotate-ads&view=generator');?>"><?php _e('Generator', 'adrotate-pro'); ?></a>
 				&nbsp;|&nbsp;<a class="row-title" href="<?php echo admin_url('/admin.php?page=adrotate-ads&view=addnew');?>"><?php _e('Add New', 'adrotate-pro'); ?></a>
+				&nbsp;|&nbsp;<a class="row-title" href="<?php echo admin_url('/admin.php?page=adrotate-ads&view=advanced');?>"><?php _e('Header & ads.txt', 'adrotate-pro'); ?></a>
 				<?php if($adrotate_config['enable_advertisers'] == "Y") { ?>
 				&nbsp;|&nbsp;<a class="row-title" href="<?php echo admin_url('/admin.php?page=adrotate-ads&view=queue');?>"><?php _e('Queue', 'adrotate-pro'); ?></a>
 				<?php } ?>
 				&nbsp;|&nbsp;<a class="row-title" href="<?php echo admin_url('/admin.php?page=adrotate-ads&view=archive');?>"><?php _e('Archive', 'adrotate-pro'); ?></a>
-				&nbsp;|&nbsp;<a class="row-title" href="<?php echo admin_url('/admin.php?page=adrotate-ads&view=bin');?>"><?php _e('Bin', 'adrotate-pro'); ?></a>
+				&nbsp;|&nbsp;<a class="row-title" href="<?php echo admin_url('/admin.php?page=adrotate-ads&view=trash');?>"><?php _e('Trash', 'adrotate-pro'); ?></a>
 			</div>
 		</div>
 
@@ -446,16 +418,29 @@ function adrotate_manage() {
 			if($error) include("dashboard/publisher/adverts-error.php");
 			include("dashboard/publisher/adverts-main.php");
 			if($disabled) include("dashboard/publisher/adverts-disabled.php");
-	   	} else if($view == "addnew" OR $view == "edit") { 
-			include("dashboard/publisher/adverts-edit.php");
 	   	} else if($view == "generator") { 
 			include("dashboard/publisher/adverts-generator.php");
+	   	} else if($view == "addnew" OR $view == "edit") { 
+			include("dashboard/publisher/adverts-edit.php");
+	   	} else if($view == "advanced") {
+	   		// Create ads.txt if it doesn't exist
+			if(!file_exists(ABSPATH.'ads.txt')){
+				$fp = fopen(ABSPATH.'ads.txt', 'wb');
+				fwrite($fp, "# Add your authorized adverts here, one per line - Have fun ;-), AdRotate Pro Support\n");
+				fwrite($fp, "# Domainname, Publisher ID, Type, Certificate Authority ID\n");
+				fclose($fp);
+			}
+			// Read ads.txt
+			$adstxt_content = file(ABSPATH.'ads.txt');			
+
+		   	$adrotate_header = get_option('adrotate_header_output');
+			include("dashboard/publisher/adverts-advanced.php");
 		} else if($view == "queue") {			
 			include("dashboard/publisher/adverts-queue.php");
 		} else if($view == "archive") {			
 			include("dashboard/publisher/adverts-archive.php");
-		} else if($view == "bin") {			
-			include("dashboard/publisher/adverts-bin.php");
+		} else if($view == "trash") {			
+			include("dashboard/publisher/adverts-trash.php");
 		}
 		?>
 		<br class="clear" />
@@ -579,17 +564,19 @@ function adrotate_statistics() {
 	if(isset($_GET['id'])) $id = esc_attr($_GET['id']);
 	if(isset($_GET['file'])) $file = esc_attr($_GET['file']);
 
-	if(isset($_GET['month']) AND isset($_GET['year'])) {
-		$month = esc_attr($_GET['month']);
-		$year = esc_attr($_GET['year']);
+	if(isset($_GET['graph_start']) AND isset($_GET['graph_end'])) {
+		list($start_day, $start_month, $start_year) = explode('-', esc_attr($_GET['graph_start']));
+		list($end_day, $end_month, $end_year) = explode('-', esc_attr( $_GET['graph_end']));
+
+		$graph_start_date = gmmktime(0, 0, 0, $start_month, $start_day, $start_year);
+		$graph_end_date = gmmktime(0, 0, 0, $end_month, $end_day, $end_year);
 	} else {
-		$month = date("m");
-		$year = date("Y");
+		$graph_end_date = current_time('timestamp');
+		$graph_start_date = $graph_end_date - (28 * DAY_IN_SECONDS);
 	}
-	$monthstart = mktime(0, 0, 0, $month, 1, $year);
-	$monthend = mktime(0, 0, 0, $month+1, 0, $year);
 	$today = adrotate_date_start('day');
 	?>
+
 	<div class="wrap">
 		<h2><?php _e('Statistics', 'adrotate-pro'); ?></h2>
 
@@ -597,17 +584,6 @@ function adrotate_statistics() {
 
 		<?php
 	    if ($view == "") {
-			$stats = adrotate_prepare_fullreport();
-			$stats_graph_month = $wpdb->get_row("SELECT SUM(`clicks`) as `clicks`, SUM(`impressions`) as `impressions` FROM `{$wpdb->prefix}adrotate_stats` WHERE `thetime` >= {$monthstart} AND `thetime` <= {$monthend};", ARRAY_A);
-			if(empty($stats_graph_month['impressions'])) $stats_graph_month['impressions'] = 0;
-			if(empty($stats_graph_month['clicks'])) $stats_graph_month['clicks'] = 0;
-	
-			// Get Click Through Rate
-			$ctr_alltime = adrotate_ctr($stats['overall_clicks'], $stats['overall_impressions']);
-			$ctr_last_month = adrotate_ctr($stats['last_month_clicks'], $stats['last_month_impressions']);
-			$ctr_this_month = adrotate_ctr($stats['this_month_clicks'], $stats['this_month_impressions']);
-			$ctr_graph_month = adrotate_ctr($stats_graph_month['clicks'], $stats_graph_month['impressions']);
-
 			include("dashboard/publisher/statistics-main.php");
 		} else if($view == "advert") {
 			include("dashboard/publisher/statistics-advert.php");
@@ -630,15 +606,13 @@ function adrotate_statistics() {
 function adrotate_manage_advertisers() {
 	global $wpdb, $userdata, $adrotate_config, $adrotate_debug;
 
-	$status = $view = $user_id = $transaction_id = '';
+	$status = $view = $user_id = '';
 	if(isset($_GET['status'])) $status = esc_attr($_GET['status']);
 	if(isset($_GET['view'])) $view = esc_attr($_GET['view']);
 	if(isset($_GET['user'])) $user_id = esc_attr($_GET['user']);
-	if(isset($_GET['transaction'])) $transaction_id = esc_attr($_GET['transaction']);
 
 	$now = adrotate_now();
 	$today = adrotate_date_start('day');
-	$overdue = $now - ($adrotate_config['payment_overdue'] * 86400);
 	?>
 	<div class="wrap">
 		<h1><?php _e('Advertisers', 'adrotate-pro'); ?></h1>
@@ -649,8 +623,7 @@ function adrotate_manage_advertisers() {
 			<div class="alignleft actions">
 				<a class="row-title" href="<?php echo admin_url('/admin.php?page=adrotate-advertisers');?>"><?php _e('Manage', 'adrotate-pro'); ?></a> | 
 				<a class="row-title" href="<?php echo admin_url('users.php?adrotate');?>"><?php _e('All Users', 'adrotate-pro'); ?></a> | 
-				<a class="row-title" href="<?php echo admin_url('user-new.php?adrotate');?>"><?php _e('New User', 'adrotate-pro'); ?></a> | 
-				<a class="row-title" href="<?php echo admin_url('/admin.php?page=adrotate-advertisers&view=transactions');?>"><?php _e('Transactions', 'adrotate-pro'); ?></a>
+				<a class="row-title" href="<?php echo admin_url('user-new.php?adrotate');?>"><?php _e('New User', 'adrotate-pro'); ?></a>
 			</div>
 		</div>
 
@@ -659,14 +632,12 @@ function adrotate_manage_advertisers() {
 
 		$advertisers = false;
 		foreach($all_advertisers as $advertiser) {
-			$has_adverts = $wpdb->get_var("SELECT COUNT(`{$wpdb->prefix}adrotate_linkmeta`.`id`) as `count` FROM `{$wpdb->prefix}adrotate`, `{$wpdb->prefix}adrotate_linkmeta` WHERE `user` = {$advertiser->ID} AND `ad` = `{$wpdb->prefix}adrotate`.`id` AND `type` != 'empty' AND `type` != 'a_empty';");
-			$unpaid_adverts = $wpdb->get_var("SELECT COUNT(`id`) as `count` FROM `{$wpdb->prefix}adrotate_transactions` WHERE `paid` = 0 AND `user` = {$advertiser->ID} AND `reference` != '';");
+			$has_adverts = $wpdb->get_var("SELECT COUNT(`{$wpdb->prefix}adrotate_linkmeta`.`id`) as `count` FROM `{$wpdb->prefix}adrotate`, `{$wpdb->prefix}adrotate_linkmeta` WHERE `user` = '{$advertiser->ID}' AND `ad` = `{$wpdb->prefix}adrotate`.`id` AND `type` != 'empty' AND `type` != 'a_empty';");
 			
 			$advertisers[$advertiser->ID] = array(
 				'name' => $advertiser->display_name,
 				'email' => $advertiser->user_email,
 				'has_adverts' => $has_adverts, 
-				'has_unpaid' => $unpaid_adverts, 
 			);
 			unset($advertiser);
 		}
@@ -677,46 +648,8 @@ function adrotate_manage_advertisers() {
 			include("dashboard/publisher/advertisers-profile.php");
 		} else if($view == "contact") {
 			include("dashboard/publisher/advertisers-contact.php");
-		} else if($view == "transactions") { // Temporary - Remove in AdRotate 5.0?
-			include("dashboard/publisher/advertisers-transactions.php");
 		}
 		?>
-		<br class="clear" />
-
-		<?php echo adrotate_trademark(); ?>
-
-	</div>
-<?php
-}
-
-/*-------------------------------------------------------------
- Name:      adrotate_manage_transactions
- Purpose:   Manage Transaction for advertisers
--------------------------------------------------------------*/
-function adrotate_manage_transactions() {
-	global $wpdb, $adrotate_config, $adrotate_debug;
-
-	$status = $view = $transaction_id = '';
-	if(isset($_GET['status'])) $status = esc_attr($_GET['status']);
-	if(isset($_GET['view'])) $view = esc_attr($_GET['view']);
-
-	$now = adrotate_now();
-	$today = adrotate_date_start('day');
-	$overdue = $now - ($adrotate_config['payment_overdue'] * 86400);
-	?>
-	<div class="wrap">
-		<h1><?php _e('Transactions', 'adrotate-pro'); ?></h1>
-
-		<?php if($status > 0) adrotate_status($status); ?>
-
-    	<?php 
-	    if ($view == "") {
-			include("dashboard/publisher/transaction-main.php");
-		} else if($view == "addnew" OR $view == "edit") {
-			include("dashboard/publisher/transaction-edit.php");
-		}
-		?>
-
 		<br class="clear" />
 
 		<?php echo adrotate_trademark(); ?>
@@ -759,6 +692,39 @@ function adrotate_manage_media() {
 		<br class="clear" />
 
 		<?php echo adrotate_trademark(); ?>
+
+	</div>
+<?php
+}
+
+/*-------------------------------------------------------------
+ Name:      adrotate_support
+ Purpose:   Get help
+-------------------------------------------------------------*/
+function adrotate_support() {
+	global $wpdb, $adrotate_config;
+
+	$status = $file = '';
+	if(isset($_GET['status'])) $status = esc_attr($_GET['status']);
+	if(isset($_GET['file'])) $file = esc_attr($_GET['file']);
+
+	$current_user = wp_get_current_user();
+
+	if(adrotate_is_networked()) {
+		$a = get_site_option('adrotate_activate');
+	} else {
+		$a = get_option('adrotate_activate');
+	}
+	?>
+
+	<div class="wrap">
+		<h1><?php _e('Premium Support', 'adrotate-pro'); ?></h1>
+
+		<?php if($status > 0) adrotate_status($status); ?>
+
+		<?php
+		include("dashboard/support.php");
+		?>
 
 	</div>
 <?php
@@ -822,7 +788,7 @@ function adrotate_options() {
 		} elseif($active_tab == 'stats') {
 			include("dashboard/settings/statistics.php");						
 		} elseif($active_tab == 'geo') {
-			$adrotate_geo_requests = get_option("adrotate_geo_requests");
+			$adrotate_geo_requests = get_option("adrotate_geo_requests", 0);
 			$adrotate_geo = adrotate_get_cookie('geo');
 
 			include("dashboard/settings/geotargeting.php");						
@@ -841,7 +807,7 @@ function adrotate_options() {
 
 			$adevaluate = wp_next_scheduled('adrotate_evaluate_ads');
 			$adschedule = wp_next_scheduled('adrotate_notification');
-			$bin = wp_next_scheduled('adrotate_empty_bin');
+			$trash = wp_next_scheduled('adrotate_empty_trash');
 			$tracker = wp_next_scheduled('adrotate_empty_trackerdata');
 			$autodelete = wp_next_scheduled('adrotate_auto_delete');
 
@@ -883,13 +849,14 @@ function adrotate_advertiser() {
 		
 	$current_user = wp_get_current_user();
 
-	$status = $view = $ad_edit_id = $request = $request_id = '';
+	$status = $view = $ad_edit_id = $filename = $request = $request_id = '';
 	if(isset($_GET['status'])) $status = esc_attr($_GET['status']);
 	if(isset($_GET['view'])) $view = esc_attr($_GET['view']);
 	if(isset($_GET['ad'])) $ad_edit_id = esc_attr($_GET['ad']);
 	if(isset($_GET['file'])) $filename = esc_attr($_GET['file']);
 	if(isset($_GET['request'])) $request = esc_attr($_GET['request']);
 	if(isset($_GET['id'])) $request_id = esc_attr($_GET['id']);
+
 	$now 			= adrotate_now();
 	$today 			= adrotate_date_start('day');
 	$in2days 		= $now + 172800;
@@ -921,29 +888,26 @@ function adrotate_advertiser() {
 		</div>
 
 		<?php 
-		$wpnonceaction = 'adrotate_email_advertiser_'.$request_id;
 		if($view == "") {
 
-			$ads = $wpdb->get_results($wpdb->prepare("SELECT `ad` FROM `{$wpdb->prefix}adrotate_linkmeta` WHERE `group` = 0 AND `user` = %d ORDER BY `ad` ASC;", $current_user->ID));
+			$ads = $wpdb->get_results($wpdb->prepare("SELECT `ad` FROM `{$wpdb->prefix}adrotate_linkmeta` WHERE `group` = 0 AND `user` = '%d' ORDER BY `ad` ASC;", $current_user->ID));
 
 			if($ads) {
 				$activebanners = $queuebanners = $disabledbanners = false;
 				foreach($ads as $ad) {
-					$banner = $wpdb->get_row("SELECT `id`, `title`, `type`, `paid`, `desktop`, `mobile`, `tablet`, `budget`, `crate`, `irate` FROM `{$wpdb->prefix}adrotate` WHERE (`type` = 'active' OR `type` = '2days' OR `type` = '7days' OR `type` = 'disabled' OR `type` = 'error' OR `type` = 'a_error' OR `type` = 'expired' OR `type` = 'queue' OR `type` = 'reject' OR `type` = 'unpaid') AND `id` = '".$ad->ad."';");
+					$banner = $wpdb->get_row("SELECT `id`, `title`, `type`, `desktop`, `mobile`, `tablet`, `budget`, `crate`, `irate` FROM `{$wpdb->prefix}adrotate` WHERE (`type` = 'active' OR `type` = '2days' OR `type` = '7days' OR `type` = 'disabled' OR `type` = 'error' OR `type` = 'a_error' OR `type` = 'expired' OR `type` = 'queue' OR `type` = 'reject') AND `id` = '{$ad->ad}';");
 
 					// Skip if no ad
 					if(!$banner) continue;
 					
 					$starttime = $stoptime = 0;
-					$starttime = $wpdb->get_var("SELECT `starttime` FROM `{$wpdb->prefix}adrotate_schedule`, `{$wpdb->prefix}adrotate_linkmeta` WHERE `ad` = '".$banner->id."' AND `schedule` = `{$wpdb->prefix}adrotate_schedule`.`id` ORDER BY `starttime` ASC LIMIT 1;");
-					$stoptime = $wpdb->get_var("SELECT `stoptime` FROM `{$wpdb->prefix}adrotate_schedule`, `{$wpdb->prefix}adrotate_linkmeta` WHERE `ad` = '".$banner->id."' AND `schedule` = `{$wpdb->prefix}adrotate_schedule`.`id` ORDER BY `stoptime` DESC LIMIT 1;");
+					$starttime = $wpdb->get_var("SELECT `starttime` FROM `{$wpdb->prefix}adrotate_schedule`, `{$wpdb->prefix}adrotate_linkmeta` WHERE `ad` = '{$banner->id}' AND `schedule` = `{$wpdb->prefix}adrotate_schedule`.`id` ORDER BY `starttime` ASC LIMIT 1;");
+					$stoptime = $wpdb->get_var("SELECT `stoptime` FROM `{$wpdb->prefix}adrotate_schedule`, `{$wpdb->prefix}adrotate_linkmeta` WHERE `ad` = '{$banner->id}' AND `schedule` = `{$wpdb->prefix}adrotate_schedule`.`id` ORDER BY `stoptime` DESC LIMIT 1;");
 	
 					$type = $banner->type;
 					if($type == 'active' AND $stoptime <= $now) $type = 'expired'; 
 					if($type == 'active' AND $stoptime <= $in2days) $type = '2days';
 					if($type == 'active' AND $stoptime <= $in7days) $type = '7days';
-					if($type == 'active' AND $banner->paid == "N") $type = 'unpaid';
-					if(($banner->crate > 0 OR $banner->irate > 0) AND $banner->budget < 1) $type = 'unpaid';
 
 					if($type == 'active' OR $type == '2days' OR $type == '7days' OR $type == 'expired') {
 						$activebanners[$banner->id] = array(
@@ -969,7 +933,7 @@ function adrotate_advertiser() {
 						);
 					}
 
-					if($type == 'queue' OR $type == 'reject' OR $type == 'error' OR $type == 'a_error' OR $type == 'unpaid') {
+					if($type == 'queue' OR $type == 'reject' OR $type == 'error' OR $type == 'a_error') {
 						$queuebanners[$banner->id] = array(
 							'id' => $banner->id,
 							'title' => $banner->title,
@@ -1002,7 +966,7 @@ function adrotate_advertiser() {
 				if($adrotate_config['stats'] == 1) {
 					// Gather data for summary report
 					$stats = adrotate_prepare_advertiser_report($current_user->ID, $activebanners);
-					$stats_graph_month = $wpdb->get_results($wpdb->prepare("SELECT SUM(`clicks`) as `clicks`, SUM(`impressions`) as `impressions` FROM `{$wpdb->prefix}adrotate_stats`, `{$wpdb->prefix}adrotate_linkmeta` WHERE `{$wpdb->prefix}adrotate_stats`.`ad` = `{$wpdb->prefix}adrotate_linkmeta`.`ad` AND `{$wpdb->prefix}adrotate_linkmeta`.`user` = %d AND `{$wpdb->prefix}adrotate_stats`.`thetime` >= %d AND `{$wpdb->prefix}adrotate_stats`.`thetime` <= %d GROUP BY `thetime` ASC;", $current_user->ID, $monthstart, $monthend), ARRAY_A);
+					$stats_graph_month = $wpdb->get_results($wpdb->prepare("SELECT SUM(`clicks`) as `clicks`, SUM(`impressions`) as `impressions` FROM `{$wpdb->prefix}adrotate_stats`, `{$wpdb->prefix}adrotate_linkmeta` WHERE `{$wpdb->prefix}adrotate_stats`.`ad` = `{$wpdb->prefix}adrotate_linkmeta`.`ad` AND `{$wpdb->prefix}adrotate_linkmeta`.`user` = '%d' AND `{$wpdb->prefix}adrotate_stats`.`thetime` >= '%d' AND `{$wpdb->prefix}adrotate_stats`.`thetime` <= '%d' GROUP BY `thetime` ASC;", $current_user->ID, $monthstart, $monthend), ARRAY_A);
 		
 					// Prevent gaps in display
 					if(empty($stats['ad_amount'])) $stats['ad_amount'] = 0;
@@ -1046,7 +1010,7 @@ function adrotate_advertiser() {
 
 		} else if($view == "message") {
 
-			if(wp_verify_nonce($_REQUEST['_wpnonce'], $wpnonceaction)) {
+			if(wp_verify_nonce($_REQUEST['_wpnonce'], 'adrotate_email_advertiser')) {
 				include("dashboard/advertiser/message.php");
 			} else {
 				adrotate_nonce_error();

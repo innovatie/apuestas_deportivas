@@ -25,10 +25,6 @@
 		<td><label for="adrotate_widgetpadding"><input type="checkbox" name="adrotate_widgetpadding" <?php if($adrotate_config['widgetpadding'] == 'Y') { ?>checked="checked" <?php } ?> /> <?php _e('Enable this to remove the padding (blank space) around adverts in widgets. (Does not always work!)', 'adrotate-pro'); ?></label></td>
 	</tr>
 	<tr>
-		<th valign="top"><?php _e('Admin Bar', 'adrotate-pro'); ?></th>
-		<td><label for="adrotate_adminbar"><input type="checkbox" name="adrotate_adminbar" <?php if($adrotate_config['adminbar'] == 'Y') { ?>checked="checked" <?php } ?> /> <?php _e('Enable the AdRotate Quickmenu in the Admin Bar', 'adrotate-pro'); ?></label></td>
-	</tr>
-	<tr>
 		<th valign="top"><?php _e('Hide Schedules', 'adrotate-pro'); ?></th>
 		<td><label for="adrotate_hide_schedules"><input type="checkbox" name="adrotate_hide_schedules" <?php if($adrotate_config['hide_schedules'] == 'Y') { ?>checked="checked" <?php } ?> /> <?php _e('When editing adverts; Hide schedules that are not in use by that advert.', 'adrotate-pro'); ?></label></td>
 	</tr>
@@ -49,6 +45,10 @@
 	<tr>
 		<th valign="top">&nbsp;</th>
 		<td><span class="description"><?php _e('It may take a while for the ad to start rotating. The caching plugin needs to refresh the cache. This can take up to a week if not done manually.', 'adrotate-pro'); ?> <?php _e('Caching support only works for [shortcodes] and the AdRotate Widget. If you use a PHP Snippet you need to wrap your PHP in the exclusion code yourself.', 'adrotate-pro'); ?></span></td>
+	</tr>
+	<tr>
+		<th valign="top"><?php _e('Affiliate Links', 'adrotate-pro'); ?></th>
+		<td><label for="adrotate_affiliates"><input type="checkbox" name="adrotate_affiliates" <?php if($adrotate_config['affiliates'] == 'Y') { ?>checked="checked" <?php } ?> /> <?php _e('Hide some of the affiliate banners in the dashboard.', 'adrotate-pro'); ?></label></td>
 	</tr>
 </table>
 
